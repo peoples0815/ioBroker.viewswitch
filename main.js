@@ -436,7 +436,7 @@ class Viewswitch extends utils.Adapter {
 				if (obj.callback) this.sendTo(obj.from, obj.command, visData, obj.callback);
 			}
 		}
-   	} 
+   	}  
 	*/
  	
 	async onMessage(obj) {
