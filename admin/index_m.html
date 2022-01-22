@@ -1,0 +1,315 @@
+<html>
+
+<head>
+
+    <!-- Load ioBroker scripts and styles-->
+    <link rel="stylesheet" type="text/css" href="../../css/adapter.css" />
+    <link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
+
+    <script type="text/javascript" src="../../lib/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../../socket.io/socket.io.js"></script>
+
+    <script type="text/javascript" src="../../js/translate.js"></script>
+    <script type="text/javascript" src="../../lib/js/materialize.js"></script>
+    <script type="text/javascript" src="../../js/adapter-settings.js"></script>
+
+    <!-- Load our own files -->
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script type="text/javascript" src="words.js"></script>
+
+
+    <script type="text/javascript">
+        const Materialize = (typeof M !== 'undefined') ? M : Materialize,
+        anime = (typeof M !== 'undefined') ? M.anime : anime,
+        namespace = 'viewswitch.' + instance;
+        /*
+        Um einen Dialog zu öffnen
+        if (typeof customPostOnSave !== 'undefined') {
+     customPostOnSave.mydevices = function ($div, instance) {
+          if (!$div.find('input[data-field="id"]').val()) {
+                  return _('Please enter ID');
+          }
+     };
+}
+ */       
+
+        // This will be called by the admin adapter when the settings page loads
+        function load(settings, onChange) {
+            // example: select elements with id=key and class=value and insert value
+            if (!settings) return;
+            $('.value').each(function () {
+                var $key = $(this);
+                var id = $key.attr('id');
+                if ($key.attr('type') === 'checkbox') {
+                    // do not call onChange direct, because onChange could expect some arguments
+                    $key.prop('checked', settings[id])
+                        .on('change', () => onChange())
+                        ;
+                } else {
+                    // do not call onChange direct, because onChange could expect some arguments
+                    $key.val(settings[id])
+                        .on('change', () => onChange())
+                        .on('keyup', () => onChange())
+                        ;
+                }
+            });
+            onChange(false);
+            // reinitialize all the Materialize labels on the page if you are dynamically adding inputs:
+            if (M) M.updateTextFields();
+        
+                
+//////////////////////////////////////////////////////////////////////////////////
+            //View-Liste aktuallisieren
+         /*   $('#visProject').on('change', function () {
+           //    genViewList();
+                 $('.tab_views').hide();
+            });
+ 
+//////////////////////////////////////////////////////////////////////////////////
+            function showHideElements(){
+                if ($('#notificationEnabled').prop('checked')) {
+                $('.tab-notification').show();
+                } else {
+                    $('.tab_views').hide();
+                }
+            }
+
+            //showHideElements();
+*/
+            
+            
+            
+/////////////////////////////////////////////////////////////////////
+            function getProjectList() {
+                return new Promise(resolve => {
+                    const mObj = new Object();
+                    mObj.command = 'getProjectList';
+                    sendTo('viewswitch.0', mObj.command, mObj, (visData) => {
+                        resolve(visData);
+                    });
+                });
+            }
+
+            function getProjectList() {
+                return new Promise(resolve => {
+                    const mObj = new Object();
+                    mObj.command = 'getProjectViews';
+                    sendTo('viewswitch.0', mObj.command, mObj, (visData) => {
+                        resolve(visData);
+                    });
+                });
+            }
+
+
+
+////////////////////////////////////////////////////////////////////////
+            function getVisContent() {
+                return new Promise(resolve => {
+                    const mObj = new Object();
+                    mObj.command = 'send';
+                    mObj.message = 'getVisData';
+                    sendTo('viewswitch.0', 'send', mObj, (visData) => {
+                        resolve(visData);
+                    });
+                });
+            }
+
+
+            async function genProjectSelect() {
+                try{
+                    let id;
+                    let $sel = $('#visProject');
+                    let result = '';
+                    const visData = await getVisContent();
+                    const visDataProjects = visData.projectList;                    
+                    let arr = [];
+                    if(visData.projectList ==''){
+                        arr.push['main'];
+                    } else {
+                       arr = visData.projectList;
+                    }
+                    if(!settings['visProject'] || settings['visProject'] == ''){
+                        $sel.html('<option value="allProjects">' + _('Select first') + '</option>');
+                    } else {
+                        $sel.html();
+                        id = settings['visProject'];
+                    }
+                    arr.sort();
+                    arr.forEach(function(val) {
+                             //$('#counties').append('<option value="' + val[0] + '"' + (id === val[0] ? ' selected' : '') + '>' + val[1] + '</option>');
+                        $('#visProject').append('<option value="' + val + '"' + (id === val ? ' selected' : '') + '>'+val+' </option>');
+                    });
+                    $sel.select();
+                    // Liste generieren
+                    genViewList();
+                }catch(e) {
+                    console.log(e); // 30
+                }
+                
+            } 
+
+            genProjectSelect();
+            
+            
+    /////////////////////////////////////////////////////////////////////////
+    //        values2table('table', array, onChange, onTableReady);
+    //        views[$('#devicesSelectedView').val()].devices.push(dialogDeviceAutocreateResult);
+   //         
+   //         $(id + ' > table > tbody').append(tableRow);
+            
+            
+            
+            
+            async function genViewList() {
+                if(settings['visProject']){
+                    let tableRow;
+                    let $table = $('#views-table');
+                    let arr = []
+                    
+                    const visData = await getVisContent();
+                    const visDataProjects = visData.viewList;
+                   
+                    if(visData.projectList ==''){
+                        //arr.push[''];
+                    } else {
+                       
+                        arr = visData.viewList;
+                        arr.sort();
+                        arr.forEach(function(val) {
+
+                            tableRow +='<tr>';
+                            tableRow +='<td>'+val+'</td>';
+                            tableRow +='<td><label><input id="sWSec'+val+'" type="number" class="value" value="'+settings['sWSec'+val]+'"></label></td>';
+                            tableRow +='<td><label><input id="isHomeView'+val+'" type="checkbox" class="value" /><span></span></label></td>';
+                            tableRow +='<td><label><input id="isLockView'+val+'" type="checkbox" class="value" /><span></span></label></td>';
+                            tableRow +='<td><label><input id="showIAV'+val+'" type="checkbox" class="value" /><span></span></label></td>';
+                            tableRow +='</tr>';
+                        });
+                        $('#views-table' + ' > table > tbody').append(tableRow);
+                    }
+                    ///////////////////////////////////////////////////////////////////////////////////////                           
+                       
+                        for (var key in settings) {
+                            if (!settings.hasOwnProperty(key)) {
+                                continue;
+                            }
+                            var $value = $('#' + key + '.value');
+                            if ($value.attr('type') === 'checkbox') {
+                                $value.prop('checked', settings[key]).on('change', function() {
+                                    onChange();
+                                });
+                            } else {
+                                $value.val(settings[key]).on('change', function() {
+                                    onChange();
+                                }).keyup(function() {
+                                    onChange();
+                                });
+                            }
+                        }
+
+                        onChange(false); 
+    ///////////////////////////////////////////////////////////////////////////////////////     
+                    }
+            
+            } 
+
+            //genViewList()
+            
+
+            
+            
+
+///////////////////////////////////////////////////////////////////////////////////////            
+
+    }
+        
+       
+        // This will be called by the admin adapter when the user presses the save button
+        function save(callback) {
+            // example: select elements with class=value and build settings object
+            var obj = {};
+            $('.value').each(function () {
+                var $this = $(this);
+                if ($this.attr('type') === 'checkbox') {
+                    obj[$this.attr('id')] = $this.prop('checked');
+                } else {
+                    obj[$this.attr('id')] = $this.val();
+                }
+            });
+            callback(obj);
+        }
+        
+        
+    </script>
+
+</head>
+
+<body>
+     <div class="m adapter-container">
+        <div id="header-area" class="row" >
+            <div id="header-logo-title" class="col s6" >
+                <img class="logo" src="viewswitch.png" >
+                <p>
+                    <span class="h-title">ViewSwitch</span><br />
+                    <span class="h-sub-title">Switch your Vis Views automaticaly</p>
+                </p>
+            </div>
+        </div>
+
+        <!-- ============= MAIN SECTION ============= -->
+
+        <div class="row">
+
+          <div class="col s12" style="padding-left:0;padding-right:0; margin-top: 0px; margin-bottom: 1px; background-color:#174475; box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);">
+            <ul class="tabs blue lighten-4">
+              <li class="tab col s2"><a href="#tab_main" class="translate">main</a></li>
+              <li class="tab col s2"><a href="#tab_views" class="translate">views</a></li>
+            </ul>
+          </div>
+    
+        
+        <div id="tab_main" class="col s12 page">
+            <!-- For example columns with settings: -->
+            <div class="row">
+                <div class="input-field col s10 m4">
+                    <select id="visProject" class="value">
+
+                    </select>
+                    <label  class="translate" for="select_projects">Select your Project</label>
+                </div>
+            </div>
+           
+        </div>
+            
+            
+        <!-- Tab Views -->
+            
+        <div id="tab_views" class="col s12 page">
+            <!-- For example columns with settings: -->
+            <div class="row">
+               <div class="col s12 m12 l12">
+                   <div id="views-table">
+                        <table class="table-values" style="width: 100%; margin-top: 8px">
+                            <thead>
+                                <tr>
+                                    <th data-name="viewName" style="width: 30%" class="translate">View Name</th>
+                                    <th data-name="sWSec" class="translate">Anzeigezeit in Sek.</th>
+                                    <th data-name="showIAV" class="translate">Sichtbar in Autoview</th>
+                                    <th data-name="isHomeView" class="translate">Ist Homeview</th>
+                                    <th data-name="isLockView" class="translate" >Ist Lockview</th>
+                                </tr>
+                                    <tbody id="table-body" class="table-values"></tbody>
+
+                                </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+
+</body>
+
+</html>

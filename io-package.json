@@ -1,0 +1,81 @@
+{
+  "common": {
+    "name": "viewswitch",
+    "version": "0.0.1",
+    "news": {
+      "0.0.1": {
+        "en": "initial release",
+        "de": "Erstveröffentlichung",
+        "ru": "Начальная версия",
+        "pt": "lançamento inicial",
+        "nl": "Eerste uitgave",
+        "fr": "Première version",
+        "it": "Versione iniziale",
+        "es": "Versión inicial",
+        "pl": "Pierwsze wydanie",
+        "zh-cn": "首次出版"
+      }
+    },
+    "title": "ViewSwitch",
+    "titleLang": {
+      "en": "ViewSwitch",
+      "de": "ViewSwitch",
+      "ru": "ViewSwitch",
+      "pt": "ViewSwitch",
+      "nl": "ViewSwitch",
+      "fr": "ViewSwitch",
+      "it": "ViewSwitch",
+      "es": "ViewSwitch",
+      "pl": "ViewSwitch",
+      "zh-cn": "ViewSwitch"
+    },
+    "desc": {
+      "en": "Adapter to automate switching your Vis-Views",
+      "de": "Adapter zum automatischen Umschalten Ihrer Vis-Ansichten",
+      "ru": "Адаптер для автоматического переключения ваших Vis-Views",
+      "pt": "Adaptador para automatizar a troca de suas Vis-Views",
+      "nl": "Adapter om automatisch uw Vis-Views te wisselen",
+      "fr": "Adaptateur pour automatiser le changement de vos Vis-Views",
+      "it": "Adattatore per automatizzare il cambio di Vis-View",
+      "es": "Adaptador para automatizar el cambio de Vis-Views",
+      "pl": "Adapter do automatyzacji przełączania widoków Vis",
+      "zh-cn": "自动切换可见视图的适配器"
+    },
+    "authors": [
+      "Peoples <peoples0815github@gmail.com>"
+    ],
+    "keywords": [
+      "ViewSwitch",
+      "vis"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "main": "main.js",
+    "icon": "viewswitch.png",
+    "enabled": true,
+    "stopBeforeUpdate": true,
+    "extIcon": "https://raw.githubusercontent.com/peoples0815/ioBroker.viewswitch/main/admin/viewswitch.png",
+    "readme": "https://github.com/peoples0815/ioBroker.viewswitch/blob/main/README.md",
+    "loglevel": "info",
+    "mode": "daemon",
+    "type": "general",
+    "messagebox": true,
+    "materializeTab": true,
+    "compact": true,
+    "connectionType": "local",
+    "dataSource": "push",
+    "materialize": true,
+    "dependencies": [
+      {
+        "js-controller": ">=2.0.0"
+      }
+    ],
+    "installedFrom": "peoples0815/ioBroker.viewswitch#899cff4b5cb1bb4f544ead33520a24aecc622d3e"
+  },
+  "native": {
+    "option1": true,
+    "option2": "42"
+  },
+  "objects": [],
+  "instanceObjects": []
+}
