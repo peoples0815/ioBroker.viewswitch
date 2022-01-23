@@ -1,0 +1,133 @@
+{
+    "type": "tabs",
+    "items": {
+      "Main": {
+        "type": "panel",
+        "label": "Main",
+        "items": {
+          "engine": {
+            "type": "selectSendTo",
+            "label": "Existing Projects",
+            "sm": 2,
+            "command": "getProjectList"
+          }
+        }
+      },
+      "Views": {
+        "type": "panel",
+        "label": "Views",
+        "items": {
+          "type": {
+            "type": "select",
+            "label": "Type",
+            "sm": 2,
+            "options": [
+              {
+                "label": "Browser",
+                "value": "browser"
+              },
+              {
+                "label": "Chromecast",
+                "value": "chromecast"
+              },
+              {
+                "label": "Google Home",
+                "value": "googleHome"
+              },
+              {
+                "label": "HEOS",
+                "value": "heos"
+              },
+              {
+                "label": "MediaPlayer24",
+                "value": "mp24"
+              },
+              {
+                "label": "MediaPlayer24+FTP",
+                "value": "mp24ftp"
+              },
+              {
+                "label": "MPD",
+                "value": "mpd"
+              },
+              {
+                "label": "Sonos",
+                "value": "sonos"
+              },
+              {
+                "label": "System",
+                "value": "system"
+              },
+              {
+                "label": "Windows default",
+                "value": "windows"
+              }
+            ]
+          },
+          "player": {
+            "newLine": true,
+            "type": "select",
+            "label": "Player",
+            "hidden": "data.type !== 'system'",
+            "options": [
+              {"label":  "Custom", "value": "custom"},
+              {"label": "mpg321", "value": "mpg321"},
+              {"label":  "OMXPlayer", "value": "omxplayer"},
+              {"label":  "MPlayer", "value": "mplayer"}
+             ]
+          },
+          "command": {
+            "type": "text",
+            "label": "System command",
+            "hidden": "data.type !== 'system' || data.player !== 'custom'"
+          },
+          "instance": {
+            "newLine": true,
+            "type": "text",
+            "label": "Browser instance",
+            "hidden": "data.type !== 'browser'"
+          },
+          "server": {
+            "newLine": true,
+            "type": "text",
+            "label": "Server IP",
+            "hidden": "data.type !== 'mp24ftp' && data.type !== 'mp24' && data.type  !== 'googleHome'"
+           },
+          "port": {
+            "type": "number",
+            "label": "Port",
+            "hidden": "data.type !== 'mp24ftp'"
+          },
+          "device": {
+            "newLine": true,
+            "type": "selectSendTo",
+            "label": "Device",
+            "sm": 2,
+            "command": "getDevices",
+            "alsoDependsOn": ["type"],
+            "hidden": "data.type !== 'sonos' && data.type !== 'mpd' && data.type !== 'heos' && data.type !== 'chromecast' && data.type !== 'googleHome'",
+            "jsonData": "{\"type\":  \"${data.type}\"}"
+          },
+          "web": {
+            "type": "selectSendTo",
+            "label": "Web instance",
+            "sm": 2,
+            "command": "getWebInstances",
+            "alsoDependsOn": ["type"],
+            "hidden": "data.type !== 'sonos' && data.type !== 'mpd' && data.type !== 'heos' && data.type !== 'chromecast' && data.type !== 'googleHome'",
+            "jsonData": "{\"adapter\":  \"${data.type}\"}"
+          },
+          "webServer": {
+            "type": "selectSendTo",
+            "label": "Web Server IP",
+            "sm": 2,
+            "command": "getWebServers",
+            "alsoDependsOn": ["web"],
+            "hidden": "data.type !== 'sonos' && data.type !== 'mpd' && data.type !== 'heos' && data.type !== 'chromecast' && data.type !== 'googleHome'",
+            "jsonData": "{\"web\":  \"${data.web}\"}"
+          }
+        }
+      }
+    }
+  }
+  

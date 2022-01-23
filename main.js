@@ -44,6 +44,7 @@ class Viewswitch extends utils.Adapter {
 	// read existing Projects
 	readProjects(){
 		let projectList;
+		let selAdmin = [];
 		let visProjects =[];
 		let jsonFile = dirPath +'_data.json';
 		
@@ -52,11 +53,13 @@ class Viewswitch extends utils.Adapter {
 			projectList = Object.keys(JSON.parse(fs.readFileSync(jsonFile, 'utf8')));
 			for(i = 0; i < projectList.length; i++) {
 				if(projectList[i].substring(projectList[i].length - 15).indexOf('/vis-views.json') != -1){
+					selAdmin.push({'label': projectList[i].substring(0, (projectList[i].length - 15)),
+								   'value': projectList[i].substring(0, (projectList[i].length - 15))});
 					visProjects.push(projectList[i].substring(0, (projectList[i].length - 15)));
 				}
 			}
 			visProjects.sort();
-			return(visProjects);
+			return[visProjects, selAdmin];
 		} else {
 			this.log.error('Cannot find ' + dirPath + adapter.config.visProject+'/vis-views.json');
 		}
@@ -445,7 +448,7 @@ class Viewswitch extends utils.Adapter {
             switch (obj.command) {
                 case 'send': {
                     try {
-						visData.projectList =  await this.readProjects();
+						visData.projectList =  await this.readProjects()[0];
 						visData.viewList = await this.readViews(this.config.visProject);
                     }
                     catch (e) {
@@ -454,6 +457,7 @@ class Viewswitch extends utils.Adapter {
                     this.sendTo(obj.from, obj.command, visData, obj.callback);
                     break;
                 }
+				/* Nicht mehr benoetigt
 				case 'getProjectList':{
 					try {
 						visData.projectList =  await this.readProjects();
@@ -464,6 +468,7 @@ class Viewswitch extends utils.Adapter {
                     this.sendTo(obj.from, obj.command, visData, obj.callback);
                     break;
 				}
+				*/
 				case 'getProjectViews':{
 					try {
 						visData.viewList =  await this.readViews(this.config.visProject);
@@ -473,6 +478,12 @@ class Viewswitch extends utils.Adapter {
                     }
                     this.sendTo(obj.from, obj.command, visData, obj.callback);
                     break;
+				}
+				case 'getProjectList': {
+					let result = this.readProjects()[1];
+					obj.callback && this.sendTo(obj.from, obj.command, result, obj.callback);
+					
+					break;
 				}
             }
         }
