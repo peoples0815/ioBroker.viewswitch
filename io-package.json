@@ -54,7 +54,7 @@
     "icon": "viewswitch.png",
     "enabled": true,
     "stopBeforeUpdate": true,
-    "extIcon": "https://raw.githubusercontent.com/peoples0815/ioBroker.viewswitch/main/admin/viewswitch.png",
+    "extIcon": "https://raw.githubusercontent.com/peoples0815/ioBroker.viewswitch/master/admin/viewswitch.png",
     "readme": "https://github.com/peoples0815/ioBroker.viewswitch/blob/main/README.md",
     "loglevel": "info",
     "mode": "daemon",
