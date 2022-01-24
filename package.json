@@ -1,5 +1,5 @@
 {
-  "_from": "github:peoples0815/ioBroker.viewswitch#899cff4b5cb1bb4f544ead33520a24aecc622d3e",
+  "_from": "github:peoples0815/ioBroker.viewswitch#3c1d0630e209e72fab7e62ecb94a3f8f0fbde81c",
   "_id": "iobroker.viewswitch@0.0.1",
   "_inBundle": false,
   "_integrity": "",
@@ -7,18 +7,18 @@
   "_phantomChildren": {},
   "_requested": {
     "type": "git",
-    "raw": "peoples0815/ioBroker.viewswitch#899cff4b5cb1bb4f544ead33520a24aecc622d3e",
-    "rawSpec": "peoples0815/ioBroker.viewswitch#899cff4b5cb1bb4f544ead33520a24aecc622d3e",
-    "saveSpec": "github:peoples0815/ioBroker.viewswitch#899cff4b5cb1bb4f544ead33520a24aecc622d3e",
+    "raw": "peoples0815/ioBroker.viewswitch#3c1d0630e209e72fab7e62ecb94a3f8f0fbde81c",
+    "rawSpec": "peoples0815/ioBroker.viewswitch#3c1d0630e209e72fab7e62ecb94a3f8f0fbde81c",
+    "saveSpec": "github:peoples0815/ioBroker.viewswitch#3c1d0630e209e72fab7e62ecb94a3f8f0fbde81c",
     "fetchSpec": null,
-    "gitCommittish": "899cff4b5cb1bb4f544ead33520a24aecc622d3e"
+    "gitCommittish": "3c1d0630e209e72fab7e62ecb94a3f8f0fbde81c"
   },
   "_requiredBy": [
     "#USER",
     "/"
   ],
-  "_resolved": "github:peoples0815/ioBroker.viewswitch#899cff4b5cb1bb4f544ead33520a24aecc622d3e",
-  "_spec": "peoples0815/ioBroker.viewswitch#899cff4b5cb1bb4f544ead33520a24aecc622d3e",
+  "_resolved": "github:peoples0815/ioBroker.viewswitch#3c1d0630e209e72fab7e62ecb94a3f8f0fbde81c",
+  "_spec": "peoples0815/ioBroker.viewswitch#3c1d0630e209e72fab7e62ecb94a3f8f0fbde81c",
   "_where": "/opt/iobroker",
   "author": {
     "name": "Peoples",
