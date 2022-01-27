@@ -13,13 +13,13 @@ const fs = require("fs");
 const adapterName    = require('./package.json').name.split('.').pop();
 const dirPath        = '/opt/iobroker/iobroker-data/files/vis.0/';
 const viewsJsonFile  = '/vis-views.json'
-
 let adapter;
 
 let viewFolder = 'Views';
 
 let timerTout;
 let i = 0;
+
 
 class Viewswitch extends utils.Adapter {
 
@@ -58,7 +58,7 @@ class Viewswitch extends utils.Adapter {
 			visProjects.sort();
 			return(visProjects);
 		} else {
-			this.log.error('Cannot find ' + dirPath + adapter.config.visProject+'/vis-views.json');
+			this.log.error('Cannot find ' + dirPath + this.config.visProject+'/vis-views.json');
 		}
 	}
 	// generate existing Projects
@@ -102,104 +102,41 @@ class Viewswitch extends utils.Adapter {
 	}
 
 	// delete not longer existing views
-async deleteVisObjects(arr){
-    try{
-        const states = await this.getStatesAsync('Views' + '.*');
-        for (const idS in states){
-           let nmb = idS.split('.')[3];
-            if(arr.includes(nmb)){
-                this.log.debug('View exists in Json: '+idS)
-            } else {
-                this.log.debug('View does NOT exist in Json: '+idS)
-                await this.delObject(idS);
-            } 
-        }
-    } catch (err) {
-        this.log.error(err);
-    }
-}
-/*
-// Clean up objects if still hm-rpc.meta exist
-    try {
-        const doc = await adapter.getObjectListAsync({
-            startkey: 'hm-rpc.meta',
-            endkey: 'hm-rpc.meta\u9999'
-        });
+	async deleteVisObjects(arr){
+		try{
+			const states = await this.getStatesAsync('Views' + '.*');
+			for (const idS in states){
+				let nmb = idS.split('.')[3];
+				if(arr.includes(nmb)){
+					this.log.debug('View exists in Json: '+idS)
+				} else {
+					this.log.debug('View does NOT exist in Json: '+idS)
+					await this.delObjectAsync(idS);
+					await this.delObjectAsync(this.namespace + '.Views.' + nmb);
+				} 
+			}
+		} catch (err) {
+			this.log.error(err);
+		}
+	}
 
-        if (doc && doc.rows) {
-            if (doc.rows.length >= 50) {
-                adapter.log.info('Cleaning up meta folder... this may take some time');
-            }
-
-            for (const row of doc.rows) {
-                try {
-                    await adapter.delForeignObjectAsync(row.id);
-                } catch (e) {
-                    adapter.log.warn(`Could not delete ${row.id}: ${e.message}`);
-                }
-            }
-        }
-    } catch (e) {
-        adapter.log.error(`getObjectListAsync hm-rpc: ${e.message}`);
-    }
-/////////////////////////////// fb
-const states = await this.getStatesAsync(dName + '.*');
-                                for (const idS in states) {
-                                    await this.delObjectAsync(idS);
-                                    await this.delStateAsync(idS);
-                                }
-////////////////////////////////////////////
-function delObjects(list, callback) {
-    if (!list || !list.length) {
-        if (callback) callback();
-    } else {
-        var obj  = list.pop();
-        var id   = obj.id || obj._id;
-        var type = obj.value ? obj.value.type : obj.type;
-
-        adapter.delForeignObject(id, function (err) {
-            if (err && err !== 'Not exists') adapter.log.error('res from delObject: ' + err);
-
-            if (type === 'state') {
-                adapter.delForeignState(id, function (err) {
-                    if (err && err !== 'Not exists') adapter.log.error('res from deleteState: ' + err);
-                    setTimeout(delObjects, 0, list, callback);
-                });
-            } else {
-                setTimeout(delObjects, 0, list, callback);
-            }
-        });
-    }
-}
-///////////////////////////////////////////////
-// delete all inactive devices
-        var list = [];
-        for (var id in objects) {
-            if (!objects.hasOwnProperty(id)) continue;
-            if (objects[id].type === 'device') {
-                if (!nodes[objects[id].native.nodeID]) {
-                    adapter.log.info('Delete ' + objects[id].native.nodeID);
-                    getAllSubObjects(objects[id].native.nodeID, list);
-                }
-            }
-        }
-        delObjects(list, function () {
-            // after deleting unneccessary devices, fix button states
-            fixZwaveButtons();
-        });
-
-*/
 	// Create not existing Objects
 	createObjects(arr){
 		let startHomeView;
 ////////////////////////////////////		
 		for(let i=0; i<arr.length;i++){
 			this.setObjectNotExistsAsync(viewFolder, {
-				type: 'folder',
+				type: 'channel',
+				common: {
+					name: 'Project Views' 
+				},
 				native: {},
 			});
 			this.setObjectNotExistsAsync(viewFolder + '.' + arr[i], {
-				type: 'folder',
+				type: 'channel',
+				common: {
+					name: arr[i]
+				},
 				native: {},
 			});
 			this.setObjectNotExistsAsync(viewFolder + '.' + arr[i] + '.showIAV', {
@@ -355,12 +292,11 @@ function delObjects(list, callback) {
 		try {
 		    let result = this.readViews(this.config.visProject);//this.readViews('');
 			this.createObjects(result);
-			this.deleteVisObjects(readViews(adapter.config.visProject));
+			this.deleteVisObjects(this.readViews(this.config.visProject));
 			this.generateProjectList(dirPath, viewsJsonFile);
         } catch (error) {
 			this.log.info(error); 
         }
-		
 		
 		/*
 		try {
