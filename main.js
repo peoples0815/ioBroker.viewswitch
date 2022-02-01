@@ -97,7 +97,7 @@ class Viewswitch extends utils.Adapter {
 			viewList.shift();
 			return(viewList);
 		} else {
-			this.log.error('Cannot find ' + dirPath + adapter.config.visProject+'/vis-views.json');
+			this.log.error('Cannot find ' + dirPath + this.config.visProject+'/vis-views.json');
 		}
 	}
 
@@ -290,10 +290,10 @@ class Viewswitch extends utils.Adapter {
 	async onReady() {
 		
 		try {
-		    let result = this.readViews(this.config.visProject);//this.readViews('');
-			this.createObjects(result);
-			this.deleteVisObjects(this.readViews(this.config.visProject));
-			this.generateProjectList(dirPath, viewsJsonFile);
+		    //let result = this.readViews(this.config.visProject);//this.readViews('');
+			//this.createObjects(result);
+			//this.deleteVisObjects(this.readViews(this.config.visProject));
+			//this.generateProjectList(dirPath, viewsJsonFile);
         } catch (error) {
 			this.log.info(error); 
         }
@@ -469,8 +469,8 @@ class Viewswitch extends utils.Adapter {
             switch (obj.command) {
                 case 'send': {
                     try {
-						visData.projectList =  await this.readProjects();
-						visData.viewList = await this.readViews(this.config.visProject);
+						visData.projectList =  this.readProjects();
+						//visData.viewList = this.readViews(this.config.visProject);
                     }
                     catch (e) {
                         this.log.error(e);
@@ -478,7 +478,7 @@ class Viewswitch extends utils.Adapter {
                     this.sendTo(obj.from, obj.command, visData, obj.callback);
                     break;
                 }
-				case 'getProjectList':{
+				case 'projects':{
 					try {
 						visData.projectList =  await this.readProjects();
                     }
@@ -488,7 +488,7 @@ class Viewswitch extends utils.Adapter {
                     this.sendTo(obj.from, obj.command, visData, obj.callback);
                     break;
 				}
-				case 'getProjectViews':{
+				case 'views':{
 					try {
 						visData.viewList =  await this.readViews(this.config.visProject);
                     }
