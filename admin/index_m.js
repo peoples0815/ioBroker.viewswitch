@@ -56,26 +56,7 @@ const Materialize = (typeof M !== 'undefined') ? M : Materialize,
                 });
             }
             
-            function getVisProjects() {
-                return new Promise(resolve => {
-                    const mObj = new Object();
-                    mObj.command = 'projects';
-                    mObj.message = '';
-                    sendTo('viewswitch.0', mObj.command, mObj, (visData) => {
-                        resolve(visData);
-                    });
-                });
-            }
-            function getVisViews(project) {
-                return new Promise(resolve => {
-                    const mObj = new Object();
-                    mObj.command = 'views';
-                    mObj.message = project;
-                    sendTo('viewswitch.0', mObj.command, mObj, (visData) => {
-                        resolve(visData);
-                    });
-                });
-            }
+            
             /*
             nachstehende funktion liefert ergebnisse
             function getVisContent() {
@@ -96,7 +77,7 @@ const Materialize = (typeof M !== 'undefined') ? M : Materialize,
                     let id;
                     let $sel = $('#visProject');
                     let result = '';
-                    const visData = await getVisProjects();
+                    const visData = await getVisContent('projects');
                     const visDataProjects = visData.projectList;                    
                     let arr = [];
                     if(visData.projectList ==''){
@@ -184,59 +165,58 @@ extVisProjects
             
             
             
-            async function genViewList(project) {
-                let tableRow;
-                let $table = $('#views-table');
-                let arr = []
-                if(project && project !== ''){
-                    const visData = await getVisViews(project);
-                }
-                else if(settings['visProject']){
-                    const visData = await getVisViews(settings['visProject']);
-                } else {
-                    console.log('----------------- nothing ist set yet-------------------')
-                }   
-                 
-                const viewList = visData.viewList;
-                if(viewList ==''){
-                    //arr.push[''];
-                } else {
+            async function genViewList() {
+                if(settings['visProject']){
+                    const visData = await getVisContent('views');
+                
+                    let tableRow;
+                    let $table = $('#views-table');
+                    let arr = []
                     
-                    arr = visData.viewList;
-                    arr.sort();
-                    arr.forEach(function(val) {
-
-                        tableRow +='<tr>';
-                        tableRow +='<td>'+val+'</td>';
-                        tableRow +='<td><label><input id="sWSec'+val+'" type="number" class="value" value="'+settings['sWSec'+val]+'"></label></td>';
-                        tableRow +='<td><label><input id="isHomeView'+val+'" type="checkbox" class="value" /><span></span></label></td>';
-                        tableRow +='<td><label><input id="isLockView'+val+'" type="checkbox" class="value" /><span></span></label></td>';
-                        tableRow +='<td><label><input id="showIAV'+val+'" type="checkbox" class="value" /><span></span></label></td>';
-                        tableRow +='</tr>';
-                    });
-                    $('#views-table' + ' > table > tbody').append(tableRow);
-                }
-                ///////////////////////////////////////////////////////////////////////////////////////                           
                     
-                for (var key in settings) {
-                    if (!settings.hasOwnProperty(key)) {
-                        continue;
-                    }
-                    var $value = $('#' + key + '.value');
-                    if ($value.attr('type') === 'checkbox') {
-                        $value.prop('checked', settings[key]).on('change', function() {
-                            onChange();
-                        });
+                    const viewList = visData.viewList;
+                    if(viewList ==''){
+                        //arr.push[''];
                     } else {
-                        $value.val(settings[key]).on('change', function() {
-                            onChange();
-                        }).keyup(function() {
-                            onChange();
-                        });
-                    }
-                }
+                        
+                        arr = visData.viewList;
+                        arr.sort();
+                        arr.forEach(function(val) {
 
-                onChange(false); 
+                            tableRow +='<tr>';
+                            tableRow +='<td>'+val+'</td>';
+                            tableRow +='<td><label><input id="sWSec'+val+'" type="number" class="value" value="'+settings['sWSec'+val]+'"></label></td>';
+                            tableRow +='<td><label><input id="isHomeView'+val+'" type="checkbox" class="value" /><span></span></label></td>';
+                            tableRow +='<td><label><input id="isLockView'+val+'" type="checkbox" class="value" /><span></span></label></td>';
+                            tableRow +='<td><label><input id="showIAV'+val+'" type="checkbox" class="value" /><span></span></label></td>';
+                            tableRow +='</tr>';
+                        });
+                        $('#views-table' + ' > table > tbody').append(tableRow);
+                    }
+                    ///////////////////////////////////////////////////////////////////////////////////////                           
+                        
+                    for (var key in settings) {
+                        if (!settings.hasOwnProperty(key)) {
+                            continue;
+                        }
+                        var $value = $('#' + key + '.value');
+                        if ($value.attr('type') === 'checkbox') {
+                            $value.prop('checked', settings[key]).on('change', function() {
+                                onChange();
+                            });
+                        } else {
+                            $value.val(settings[key]).on('change', function() {
+                                onChange();
+                            }).keyup(function() {
+                                onChange();
+                            });
+                        }
+                    }
+
+                    onChange(false); 
+                } else {
+                        console.log('----------------- nothing ist set yet-------------------')
+                }  
     ///////////////////////////////////////////////////////////////////////////////////////     
                 
             
@@ -252,13 +232,15 @@ extVisProjects
                 } else {
                     $('.tab-Views-main').hide();
                 } 
+                
                 $('#visProject').on('change', function () {
                     console.log('-------------------------------'+$(this).val());
                    
                     
-                    genViewList($(this).val());       
+                    //genViewList();       
                       
-                }).trigger('change');       
+                }).trigger('change'); 
+                      
             }       
 
 ///////////////////////////////////////////////////////////////////////////////////////            
