@@ -57,7 +57,7 @@ const Materialize = (typeof M !== 'undefined') ? M : Materialize,
             }
             
             
-            /*
+            /*Original
             nachstehende funktion liefert ergebnisse
             function getVisContent() {
                 return new Promise(resolve => {
@@ -86,7 +86,7 @@ const Materialize = (typeof M !== 'undefined') ? M : Materialize,
                        arr = visData.projectList;
                     }
                     if(!settings['visProject'] || settings['visProject'] == ''){
-                        $sel.html('<option value="allProjects">' + _('Select first') + '</option>');
+                        $sel.html('<option value="allProjects" "selected">' + _('Select first') + '</option>');
                     } else {
                         $sel.html();
                         id = settings['visProject'];
@@ -104,9 +104,11 @@ const Materialize = (typeof M !== 'undefined') ? M : Materialize,
                 }
                 
             } 
+            genProjectSelect();
+
 
             /*
-            // nachstehende Funktion liefert Ergebnisse
+            // Original
             async function genProjectSelect() {
                 try{
                     let id;
@@ -140,27 +142,9 @@ const Materialize = (typeof M !== 'undefined') ? M : Materialize,
                 
             } 
             */
-            genProjectSelect();
+            
             
            
-
-
-
-
-
-/*
-            
-extVisProjects
-
-
-<input id="showIAV'+val+'" type="checkbox" class="value" />
-     <label  class="translate" for="select_projects">Select your Project</label>
-*/
-    /////////////////////////////////////////////////////////////////////////
-    //        values2table('table', array, onChange, onTableReady);
-    //        views[$('#devicesSelectedView').val()].devices.push(dialogDeviceAutocreateResult);
-   //         
-   //         $(id + ' > table > tbody').append(tableRow);
             
             
             
@@ -185,7 +169,7 @@ extVisProjects
 
                             tableRow +='<tr>';
                             tableRow +='<td>'+val+'</td>';
-                            tableRow +='<td><label><input id="sWSec'+val+'" type="number" class="value" value="'+settings['sWSec'+val]+'"></label></td>';
+                            tableRow +='<td><label><input id="swSec'+val+'" type="number" class="value"></label></td>';
                             tableRow +='<td><label><input id="isHomeView'+val+'" type="checkbox" class="value" /><span></span></label></td>';
                             tableRow +='<td><label><input id="isLockView'+val+'" type="checkbox" class="value" /><span></span></label></td>';
                             tableRow +='<td><label><input id="showIAV'+val+'" type="checkbox" class="value" /><span></span></label></td>';
@@ -193,7 +177,6 @@ extVisProjects
                         });
                         $('#views-table' + ' > table > tbody').append(tableRow);
                     }
-                    ///////////////////////////////////////////////////////////////////////////////////////                           
                         
                     for (var key in settings) {
                         if (!settings.hasOwnProperty(key)) {
@@ -217,34 +200,33 @@ extVisProjects
                 } else {
                         console.log('----------------- nothing ist set yet-------------------')
                 }  
-    ///////////////////////////////////////////////////////////////////////////////////////     
-                
-            
             } 
 
             //genViewList()
             
             function showHideElements(settings) {
-                console.log(settings)
                 // Ein und Ausblenden des tabs -----------functioniert nicht
                 if ($('#visProj_').prop('checked')) {
                     $('.tab-Views-main').show();
                 } else {
                     $('.tab-Views-main').hide();
-                } 
-                
+                }                     
                 $('#visProject').on('change', function () {
-                    console.log('-------------------------------'+$(this).val());
-                   
-                    
-                    //genViewList();       
-                      
-                }).trigger('change'); 
-                      
+                    if ($(this).val() === 'Select first') {
+                        $('.tab_views').show();
+                    } else {
+                        $('.tab_views').hide();
+                    }     
+                
+                
+
+
+
+
+
+
+                }).trigger('change');     
             }       
-
-///////////////////////////////////////////////////////////////////////////////////////            
-
     }
         
        

@@ -288,7 +288,7 @@ class Viewswitch extends utils.Adapter {
 	 * Is called when databases are connected and adapter received configuration.
 	 */
 	async onReady() {
-		
+		/*
 		try {
 		    //let result = this.readViews(this.config.visProject);//this.readViews('');
 			//this.createObjects(result);
@@ -297,7 +297,7 @@ class Viewswitch extends utils.Adapter {
         } catch (error) {
 			this.log.info(error); 
         }
-		
+		*/
 		/*
 		try {
 			this.createObjects(dirPath, viewsJsonFile);
