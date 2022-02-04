@@ -46,22 +46,20 @@
         
         <div id="tab_main" class="col s12 page">
             <div class="row">
-                <h6 class="translate title" style="background-color:#174475; font-size: 0.9rem; border-radius: 4px;">Found Vis-Projects</h6>
-                <div class="input-field col s10 m4">
-                    <select id="visProject" class="value">
-                    </select>
-                    <label  class="translate" for="visProject">Select your Project</label>
-                    <div class="chip" id="selVisProjectFirst">
-                        Please select your Project first
-                    </div>
+                <h6 class="translate title" style="background-color:#174475; font-size: 0.9rem; border-radius: 4px;margin-bottom:30px;">Found Vis-Projects</h6>
+                    <div class="input-field col s4">
+                        <select id="visProject" class="value">
+                        </select>
+                        <label  class="translate" for="visProject">Select your Project</label>
+                        
                 </div>
             </div>             
            
             <div class="row" style="padding: 2px;">
                 <h6 class="translate title" style="background-color:#174475; font-size: 0.9rem; border-radius: 4px;">Other Settings</h6>
                 <div class="input-field col s6 l2">
-                    <input class="value" id="test" type="checkbox"/>
-                    <label for="test" class="translate">test</label>
+                    <input class="value" id="testCheckbox" type="checkbox"/>
+                    <label for="testCheckbox" class="translate">Ein-Ausblenden</label>
                 </div>
                 <div class="input-field col s6 l2">
                     <input class="value" id="autoSwitch" type="checkbox"/>
@@ -82,15 +80,15 @@
             <!-- For example columns with settings: -->
             <div class="row">
                <div class="col s12 m12 l12">
-                   <div id="views-table">
+                   <div id="viewsTable">
                         <table class="table-values" style="width: 100%; margin-top: 8px">
                             <thead>
                                 <tr>
-                                    <th data-name="viewName" style="width: 30%" class="translate">View Name</th>
-                                    <th data-name="sWSec" class="translate">Anzeigezeit in Sek.</th>
-                                    <th data-name="showIAV" class="translate">Sichtbar in Autoview</th>
-                                    <th data-name="isHomeView" class="translate">Ist Homeview</th>
-                                    <th data-name="isLockView" class="translate" >Ist Lockview</th>
+                                    <th data-name="viewName" id="viewsTable_col_0" style="width: 30%" class="translate">View Name</th>
+                                    <th data-name="swSec"  id="viewsTable_col_1" class="translate">Anzeigezeit in Sek.</th>
+                                    <th data-name="showIAV"  id="viewsTable_col_2" class="translate">Sichtbar in Autoview</th>
+                                    <th data-name="isHomeView"  id="viewsTable_col_3" class="translate">Ist Homeview</th>
+                                    <th data-name="isLockView" id="viewsTable_col_4"  class="translate" >Ist Lockview</th>
                                 </tr>
                                     <tbody id="table-body" class="table-values"></tbody>
 

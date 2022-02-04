@@ -23,7 +23,7 @@ const Materialize = (typeof M !== 'undefined') ? M : Materialize,
                 if ($key.attr('type') === 'checkbox') {
                     // do not call onChange direct, because onChange could expect some arguments
                     $key.prop('checked', settings[id]).on('change', function () {
-                        showHideElements(settings);
+                        showHideSettings(settings);
                         onChange();
                     });
                 } else {
@@ -36,7 +36,8 @@ const Materialize = (typeof M !== 'undefined') ? M : Materialize,
                     });
                 }
             });
-            showHideElements(settings);
+            
+            showHideSettings(settings);
             onChange(false);
             // function Materialize.updateTextFields(); to reinitialize all the Materialize labels on the page if you are dynamically adding inputs.
             M.updateTextFields();  
@@ -154,7 +155,7 @@ const Materialize = (typeof M !== 'undefined') ? M : Materialize,
                     const visData = await getVisContent('views');
                 
                     let tableRow;
-                    let $table = $('#views-table');
+                    let $table = $('#viewsTable');
                     let arr = []
                     
                     
@@ -168,14 +169,14 @@ const Materialize = (typeof M !== 'undefined') ? M : Materialize,
                         arr.forEach(function(val) {
 
                             tableRow +='<tr>';
-                            tableRow +='<td>'+val+'</td>';
+                            tableRow +='<td style="font-weight:bold">'+val+'</td>';
                             tableRow +='<td><label><input id="swSec'+val+'" type="number" class="value"></label></td>';
                             tableRow +='<td><label><input id="isHomeView'+val+'" type="checkbox" class="value" /><span></span></label></td>';
                             tableRow +='<td><label><input id="isLockView'+val+'" type="checkbox" class="value" /><span></span></label></td>';
                             tableRow +='<td><label><input id="showIAV'+val+'" type="checkbox" class="value" /><span></span></label></td>';
                             tableRow +='</tr>';
                         });
-                        $('#views-table' + ' > table > tbody').append(tableRow);
+                        $('#viewsTable' + ' > table > tbody').append(tableRow);
                     }
                         
                     for (var key in settings) {
@@ -197,36 +198,19 @@ const Materialize = (typeof M !== 'undefined') ? M : Materialize,
                     }
 
                     onChange(false); 
-                } else {
-                        console.log('----------------- nothing ist set yet-------------------')
-                }  
+                } 
             } 
 
             //genViewList()
             
-            function showHideElements(settings) {
+            function showHideSettings(settings) {
                 // Ein und Ausblenden des tabs -----------functioniert nicht
-                if ($('#visProj_').prop('checked')) {
-                    $('.tab-Views-main').show();
+                if ($('#testCheckbox').prop('checked')) {
+                    $('.tab_views').show();
                 } else {
-                    $('.tab-Views-main').hide();
+                    $('.tab_views').hide();
                 }                     
-                $('#visProject').on('change', function () {
-                    if ($(this).val() === 'Select first') {
-                        $('.tab_views').show();
-                    } else {
-                        $('.tab_views').hide();
-                    }     
-                
-                
-
-
-
-
-
-
-                }).trigger('change');     
-            }       
+            }     
     }
         
        
