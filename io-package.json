@@ -70,7 +70,7 @@
         "js-controller": ">=2.0.0"
       }
     ],
-    "installedFrom": "peoples0815/ioBroker.viewswitch#217fffbb1253e0a146ea4978d6944d9a0a5f8023"
+    "installedFrom": "peoples0815/ioBroker.viewswitch#0d2db5fc6265a5db131b3dc078a1e4c540f65300"
   },
   "adminUI": {
     "config": "materialize",
