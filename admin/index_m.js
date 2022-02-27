@@ -23,9 +23,7 @@ function showHideElements(settings, onChange) {
     }
     $('#visProject').on('change', function () {
         if (projectsReady) {
-            console.log('visProject changed')
             genViewList(settings, onChange);
-            onChange();
         }
     }).trigger('change');
 }
@@ -33,32 +31,31 @@ function showHideElements(settings, onChange) {
 async function genViewList(settings, onChange) {
     if (settings['visProject']) {
         const visData = await getVisContent('views', settings);
-        console.log('visData: ' + JSON.stringify(visData));
-        console.log('visProject: ' + settings['visProject'])
-        let tableRow;
-        let $table = $('#viewsTable');
-        let arr = []
-        $("#viewsTable td").remove();
-        const viewList = visData.viewList;
-        if (viewList == '') {
-            //arr.push[''];
-        } else {
 
-            arr = visData.viewList;
-            arr.sort();
-            arr.forEach(function (val) {
+        let arr = [];
 
-                tableRow += '<tr>';
-                tableRow += '<td style="font-weight:bold">' + val + '</td>';
-                tableRow += '<td><label><input id="swSec' + val + '" type="number" class="value"></label></td>';
-                tableRow += '<td><label><input id="isHomeView' + val + '" type="checkbox" class="value" /><span></span></label></td>';
-                tableRow += '<td><label><input id="isLockView' + val + '" type="checkbox" class="value" /><span></span></label></td>';
-                tableRow += '<td><label><input id="showIAV' + val + '" type="checkbox" class="value" /><span></span></label></td>';
-                tableRow += '</tr>';
-            });
-            $('#viewsTable' + ' > table > tbody').append(tableRow);
+        viewsTable = [];
+        arr = visData.viewList;
+        arr.sort();
+
+        for (var i in arr) {
+            const _arr = {
+                viewName: arr[i],
+                swSec: 0,
+                isHomeView: false,
+                isLockView: false,
+                showIAV: false
+            }
+            viewsTable.push(_arr);
         }
-        onChange();
+        values2table('viewsTable', viewsTable, onChange, tableOnReady);
+    }
+}
+
+function tableOnReady() {
+    var devices = table2values('viewsTable');
+    for (var i = 0; i < devices.length; i++) {
+        $('#viewsTable .values-input[data-name="viewName"][data-index="' + i + '"]').prop('disabled', true).trigger('change');
     }
 }
 
@@ -136,7 +133,7 @@ function load(settings, onChange) {
     });
 
     viewsTable = settings.viewsTable || [];
-    values2table('viewsTable', viewsTable, onChange);
+    values2table('viewsTable', viewsTable, onChange, tableOnReady);
 
     showHideElements(settings, onChange);
     onChange(false);
