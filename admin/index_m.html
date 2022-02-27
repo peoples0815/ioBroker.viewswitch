@@ -22,13 +22,14 @@
 </head>
 
 <body>
-     <div class="m adapter-container">
-        <div id="header-area" class="row" >
-            <div id="header-logo-title" class="col s6" >
-                <img class="logo" src="viewswitch.png" >
+    <div class="m adapter-container">
+        <div id="header-area" class="row">
+            <div id="header-logo-title" class="col s6">
+                <img class="logo" src="viewswitch.png">
                 <p>
                     <span class="h-title">ViewSwitch</span><br />
-                    <span class="h-sub-title">Switch your Vis Views automaticaly</p>
+                    <span class="h-sub-title">Switch your Vis Views automaticaly
+                </p>
                 </p>
             </div>
         </div>
@@ -36,71 +37,80 @@
         <!-- ============= MAIN SECTION ============= -->
 
         <div class="row">
-          <div class="col s12" style="padding-left:0;padding-right:0; margin-top: 0px; margin-bottom: 1px; background-color:#174475; box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);">
-            <ul class="tabs blue lighten-4">
-              <li class="tab col s2"><a href="#tab_main" class="translate">main</a></li>
-              <li class="tab col s2 tab-Views"><a href="#tab_views" class="translate">views</a></li>
-            </ul>
-          </div>
-    
-        
-        <div id="tab_main" class="col s12 page">
-            <div class="row">
-                <h6 class="translate title" style="background-color:#174475; font-size: 0.9rem; border-radius: 4px;margin-bottom:30px;">Found Vis-Projects</h6>
+            <div class="col s12"
+                style="padding-left:0;padding-right:0; margin-top: 0px; margin-bottom: 1px; background-color:#174475; box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);">
+                <ul class="tabs blue lighten-4">
+                    <li class="tab col s2"><a href="#tab_main" class="translate">main</a></li>
+                    <li class="tab col s2 tab-Views"><a href="#tab_views" class="translate">views</a></li>
+                </ul>
+            </div>
+
+
+            <div id="tab_main" class="col s12 page">
+                <div class="row">
+                    <h6 class="translate title"
+                        style="background-color:#174475; font-size: 0.9rem; border-radius: 4px;margin-bottom:30px;">
+                        Found Vis-Projects</h6>
                     <div class="input-field col s4">
                         <select id="visProject" class="value">
                         </select>
-                        <label  class="translate" for="visProject">Select your Project</label>
-                        
-                </div>
-            </div>             
-           
-            <div class="row" style="padding: 2px;">
-                <h6 class="translate title" style="background-color:#174475; font-size: 0.9rem; border-radius: 4px;">Other Settings</h6>
-                <div class="input-field col s6 l2">
-                    <input class="value" id="visProj_" type="checkbox"/>
-                    <label for="test" class="translate">Verstecke Viewliste</label>
-                </div>
-                <div class="input-field col s6 l2">
-                    <input class="value" id="autoSwitch" type="checkbox"/>
-                    <label for="autoSwitch" class="translate">Switch Views Automatic</label>
-                </div>
-            </div>
-            
+                        <label class="translate" for="visProject">Select your Project</label>
 
-     
- <!--===================================================== View List =============================================-->       
-        </div>
-    
-        
-            
-        <!-- Tab Views -->
-            
-        <div id="tab_views" class="col s12 page">
-            <!-- For example columns with settings: -->
-            <div class="row">
-               <div class="col s12 m12 l12">
-                   <div id="viewsTable">
-                        <table class="table-values" style="width: 100%; margin-top: 8px">
-                            <thead>
-                                <tr>
-                                    <th data-name="viewName" id="viewsTable_col_0" style="width: 30%" class="translate">View Name</th>
-                                    <th data-name="swSec"  id="viewsTable_col_1" class="translate">Anzeigezeit in Sek.</th>
-                                    <th data-name="showIAV"  id="viewsTable_col_2" class="translate">Sichtbar in Autoview</th>
-                                    <th data-name="isHomeView"  id="viewsTable_col_3" class="translate">Ist Homeview</th>
-                                    <th data-name="isLockView" id="viewsTable_col_4"  class="translate" >Ist Lockview</th>
-                                </tr>
-                                    <tbody id="table-body" class="table-values"></tbody>
-
-                                </thead>
-                        </table>
                     </div>
                 </div>
+
+                <div class="row" style="padding: 2px;">
+                    <h6 class="translate title"
+                        style="background-color:#174475; font-size: 0.9rem; border-radius: 4px;">Other Settings</h6>
+                    <div class="input-field col s6 l2">
+                        <input class="value" id="visProj_" type="checkbox" />
+                        <label for="test" class="translate">Verstecke Viewliste</label>
+                    </div>
+                    <div class="input-field col s6 l2">
+                        <input class="value" id="autoSwitch" type="checkbox" />
+                        <label for="autoSwitch" class="translate">Switch Views Automatic</label>
+                    </div>
+                </div>
+
+
+
+                <!--===================================================== View List =============================================-->
             </div>
-            
+
+
+
+            <!-- Tab Views -->
+
+            <div id="tab_views" class="col s12 page">
+                <!-- For example columns with settings: -->
+                <div class="row">
+                    <div class="col s12 m12 l12">
+                        <div id="viewsTable">
+                            <div class="table-values-div">
+                                <table class="table-values" style="width: 100%; margin-top: 8px">
+                                    <thead>
+                                        <tr>
+                                            <th data-name="viewName" id="viewsTable_col_0" data-type="text"
+                                                style="width: 40%" class="translate">View Name</th>
+                                            <th data-name="swSec" id="viewsTable_col_1" data-type="number"
+                                                style="width: 15%" class="translate">Anzeigezeit in Sek.</th>
+                                            <th data-name="showIAV" id="viewsTable_col_2" data-type="checkbox"
+                                                style="width: 15%" class="translate">Sichtbar in Autoview</th>
+                                            <th data-name="isHomeView" id="viewsTable_col_3" data-type="checkbox"
+                                                style="width: 15%" class="translate">Ist Homeview</th>
+                                            <th data-name="isLockView" id="viewsTable_col_4" data-type="checkbox"
+                                                style="width: 15%" class="translate">Ist Lockview</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
-        
-    </div>
 
 </body>
 

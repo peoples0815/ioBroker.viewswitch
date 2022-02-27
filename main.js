@@ -490,7 +490,8 @@ class Viewswitch extends utils.Adapter {
 				}
 				case 'views':{
 					try {
-						visData.viewList =  await this.readViews(this.config.visProject);
+						this.log.info('current VIS-Project: ' + obj.message.config.visProject)
+						visData.viewList =  await this.readViews(obj.message.config.visProject);
                     }
                     catch (e) {
                         this.log.error(e);
