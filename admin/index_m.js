@@ -101,17 +101,7 @@ async function genProjectSelect(settings, onChange) {
 
 function getVisContent(dp, settings) {
     return new Promise(resolve => {
-        const mObj = new Object();
-
-        if (dp == 'projects') {
-            mObj.command = 'projects';
-        }
-
-        if (dp == 'views') {
-            mObj.command = 'views';
-        }
-
-        sendTo('viewswitch.0', mObj.command, { config: { visProject: $('#visProject').val() || settings['visProject'] } }, (visData) => {
+        sendTo(`${adapter}.${instance}`, dp, { config: { visProject: $('#visProject').val() || settings['visProject'] } }, (visData) => {
             resolve(visData);
         });
     });
