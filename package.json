@@ -1,83 +1,49 @@
 {
-  "_from": "github:peoples0815/ioBroker.viewswitch#217fffbb1253e0a146ea4978d6944d9a0a5f8023",
-  "_id": "iobroker.viewswitch@0.0.1",
-  "_inBundle": false,
-  "_integrity": "",
-  "_location": "/iobroker.viewswitch",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "git",
-    "raw": "peoples0815/ioBroker.viewswitch#217fffbb1253e0a146ea4978d6944d9a0a5f8023",
-    "rawSpec": "peoples0815/ioBroker.viewswitch#217fffbb1253e0a146ea4978d6944d9a0a5f8023",
-    "saveSpec": "github:peoples0815/ioBroker.viewswitch#217fffbb1253e0a146ea4978d6944d9a0a5f8023",
-    "fetchSpec": null,
-    "gitCommittish": "217fffbb1253e0a146ea4978d6944d9a0a5f8023"
-  },
-  "_requiredBy": [
-    "#USER",
-    "/"
-  ],
-  "_resolved": "github:peoples0815/ioBroker.viewswitch#217fffbb1253e0a146ea4978d6944d9a0a5f8023",
-  "_spec": "peoples0815/ioBroker.viewswitch#217fffbb1253e0a146ea4978d6944d9a0a5f8023",
-  "_where": "/opt/iobroker",
-  "author": {
-    "name": "Peoples",
-    "email": "peoples0815github@gmail.com"
-  },
-  "bugs": {
-    "url": "https://github.com/peoples0815/ioBroker.viewswitch/issues"
-  },
-  "bundleDependencies": false,
-  "dependencies": {
-    "@iobroker/adapter-core": "^2.5.1"
-  },
-  "deprecated": false,
-  "description": "Adapter to automate switching your Vis-Views",
-  "devDependencies": {
-    "@alcalzone/release-script": "^3.5.0",
-    "@alcalzone/release-script-plugin-iobroker": "^3.5.0",
-    "@alcalzone/release-script-plugin-license": "^3.5.0",
-    "@iobroker/testing": "^2.5.2",
-    "@types/chai": "^4.3.0",
-    "@types/chai-as-promised": "^7.1.4",
-    "@types/gulp": "^4.0.9",
-    "@types/mocha": "^9.0.0",
-    "@types/node": "^14.18.7",
-    "@types/proxyquire": "^1.3.28",
-    "@types/sinon": "^10.0.6",
-    "@types/sinon-chai": "^3.2.8",
-    "axios": "^0.24.0",
-    "chai": "^4.3.4",
-    "chai-as-promised": "^7.1.1",
-    "eslint": "^7.32.0",
-    "gulp": "^4.0.2",
-    "mocha": "^9.1.4",
-    "proxyquire": "^2.1.3",
-    "sinon": "^12.0.1",
-    "sinon-chai": "^3.7.0",
-    "typescript": "~4.4.4"
-  },
-  "files": [
-    "admin{,/!(src)/**}/!(tsconfig|tsconfig.*).json",
-    "admin{,/!(src)/**}/*.{html,css,png,svg,jpg,js}",
-    "lib/",
-    "www/",
-    "io-package.json",
-    "LICENSE",
-    "main.js"
-  ],
-  "homepage": "https://github.com/peoples0815/ioBroker.viewswitch",
-  "keywords": [
-    "ViewSwitch",
-    "vis"
-  ],
-  "license": "MIT",
-  "main": "main.js",
   "name": "iobroker.viewswitch",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/peoples0815/ioBroker.viewswitch.git"
+  "version": "0.0.1",
+  "description": "Adapter to automate switching your Vis-Views",
+  "author": {
+      "name": "Peoples",
+      "email": "peoples0815github@gmail.com"
   },
+  "homepage": "https://github.com/peoples0815/ioBroker.viewswitch",
+  "license": "MIT",
+  "keywords": [
+      "ViewSwitch",
+      "vis"
+  ],
+  "repository": {
+      "type": "git",
+      "url": "git+https://github.com/peoples0815/ioBroker.viewswitch.git"
+  },
+  "dependencies": {
+    "@iobroker/adapter-core": "^2.6.0"
+  },
+  "devDependencies": {
+      "@alcalzone/release-script": "^3.5.2",
+      "@alcalzone/release-script-plugin-iobroker": "^3.5.1",
+      "@alcalzone/release-script-plugin-license": "^3.5.0",
+      "@iobroker/testing": "^2.5.4",
+      "@types/chai": "^4.3.0",
+      "@types/chai-as-promised": "^7.1.4",
+      "@types/gulp": "^4.0.9",
+      "@types/mocha": "^9.0.0",
+      "@types/node": "^14.18.7",
+      "@types/proxyquire": "^1.3.28",
+      "@types/sinon": "^10.0.6",
+      "@types/sinon-chai": "^3.2.8",
+      "axios": "^0.24.0",
+      "chai": "^4.3.4",
+      "chai-as-promised": "^7.1.1",
+      "eslint": "^7.32.0",
+      "gulp": "^4.0.2",
+      "mocha": "^9.1.4",
+      "proxyquire": "^2.1.3",
+      "sinon": "^12.0.1",
+      "sinon-chai": "^3.7.0",
+      "typescript": "~4.4.4"
+  },
+  "main": "main.js",
   "scripts": {
     "test": "npm run test:package && npm run test:unit",
     "test:package": "mocha test/package --exit",
@@ -85,5 +51,8 @@
     "test:integration": "mocha test/integration --exit",
     "release": "release-script"
   },
-  "version": "0.0.1"
+  "bugs": {
+    "url": "https://github.com/peoples0815/ioBroker.viewswitch/issues"
+  },
+  "readmeFilename": "README.md"
 }
