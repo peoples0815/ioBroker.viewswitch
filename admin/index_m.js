@@ -14,8 +14,6 @@ customPostOnSave.mydevices = function ($div, instance) {
 }
 */
 function showHideElements(settings, onChange) {
-    console.log(settings)
-    // Ein und Ausblenden des tabs -----------functioniert nicht
     if ($('#visProj_').prop('checked')) {
         $('.tab-Views').show();
     } else {
@@ -41,7 +39,7 @@ async function genViewList(settings, onChange) {
         for (var i in arr) {
             const _arr = {
                 viewName: arr[i],
-                swSec: 0,
+                swSec: null,
                 isHomeView: false,
                 isLockView: false,
                 showIAV: false
@@ -53,39 +51,48 @@ async function genViewList(settings, onChange) {
 }
 
 function tableOnReady() {
-    var devices = table2values('viewsTable');
-    for (var i = 0; i < devices.length; i++) {
+    var _views = table2values('viewsTable');
+    for (var i = 0; i < _views.length; i++) {
         $('#viewsTable .values-input[data-name="viewName"][data-index="' + i + '"]').prop('disabled', true).trigger('change');
+        $('#viewsTable .values-input[data-name="viewName"][data-index="' + i + '"]').addClass('nameBold').trigger('change');
     }
 }
 
-async function genProjectSelect(settings) {
+async function genProjectSelect(settings, onChange) {
     try {
         let id;
         let $sel = $('#visProject');
-        let result = '';
-        const visData = await getVisContent('projects', settings);
-        const visDataProjects = visData.projectList;
         let arr = [];
+
+        const visData = await getVisContent('projects', settings);
+
         if (visData.projectList == '') {
             arr.push['main'];
         } else {
             arr = visData.projectList;
         }
+
         if (!settings['visProject'] || settings['visProject'] == '') {
             $sel.html('<option value="allProjects" "selected">' + _('Select first') + '</option>');
         } else {
             $sel.html();
             id = settings['visProject'];
         }
+
         arr.sort();
         arr.forEach(function (val) {
             //$('#counties').append('<option value="' + val[0] + '"' + (id === val[0] ? ' selected' : '') + '>' + val[1] + '</option>');
             $('#visProject').append('<option value="' + val + '"' + (id === val ? ' selected' : '') + '>' + val + ' </option>');
         });
         $sel.select();
-        // Liste generieren
-        //genViewList(settings);
+
+        // Generate list if no view exists yet
+        var _views = table2values('viewsTable');
+
+        if (_views.length == 0) {
+            genViewList(settings, onChange);
+        }
+
         projectsReady = true;
     } catch (e) {
         console.log(e); // 30
@@ -94,14 +101,7 @@ async function genProjectSelect(settings) {
 
 function getVisContent(dp, settings) {
     return new Promise(resolve => {
-        const mObj = new Object();
-        if (dp == 'projects') {
-            mObj.command = 'projects';
-        }
-        if (dp == 'views') {
-            mObj.command = 'views';
-        }
-        sendTo('viewswitch.0', mObj.command, { config: { visProject: $('#visProject').val() || settings['visProject'] } }, (visData) => {
+        sendTo(`${adapter}.${instance}`, dp, { config: { visProject: $('#visProject').val() || settings['visProject'] } }, (visData) => {
             resolve(visData);
         });
     });
@@ -140,7 +140,7 @@ function load(settings, onChange) {
     M.updateTextFields();
 
     // Aufruf Projektliste
-    genProjectSelect(settings);
+    genProjectSelect(settings, onChange);
 
 }
 

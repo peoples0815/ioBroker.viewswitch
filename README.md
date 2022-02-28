@@ -29,7 +29,7 @@ Für jede View ist die Anzeigezeit separat einstellbar.
 ## License
 MIT License
 
-Copyright (c) 2020 Peoples <peoples0815github@gmail.com>
+Copyright (c) 2022 Peoples <peoples0815github@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
