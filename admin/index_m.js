@@ -101,11 +101,19 @@ async function genProjectSelect(settings, onChange) {
 
 function getVisContent(dp, settings) {
     return new Promise(resolve => {
-        console.log('Vor sendto');
-        sendTo(`${adapter}.${instance}`, dp, { config: { visProject: $('#visProject').val() || settings['visProject'] } }, (visData) => {
-           console.log('noch keine Daten');
-            resolve(visData);
+        var waitTime = 10;
+        socket.on('stateChange',async function (id, state) {
+            if (id === 'system.adapter.viewswitch.' + instance + '.alive') {
+                if (!state || !state.val) {
+                    waitTime = 3000;
+                }
+            }
         });
+        setTimeout(async function () {
+            sendTo(`${adapter}.${instance}`, dp, { config: { visProject: $('#visProject').val() || settings['visProject'] } }, (visData) => {
+                resolve(visData);
+            });
+        }, waitTime);
     });
 }
 
