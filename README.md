@@ -14,7 +14,7 @@
 
 ## viewswitch adapter for ioBroker
 
-Viewswitch ist ein Adapter fuer ioBroker. 
+Viewswitch ist ein Adapter für ioBroker. 
 Mit dem Adapter lassen sich automatische Seitenwechsel der vorhandenen Views eines Projekts realisieren. Nachdem eine View als Home (Hauptseite) bestimmt wurde, wechselt der Adapter nach Ablauf einer vorher eingestellten Zeit auf die konfigurierte HomeView zurück. Des Weiteren ist es möglich eine beliebige View als LockView (Sperrbildschirm) zu definieren und so beispielsweise bei aktiver Alarmanlage das bedienen der Vis zu sperren.
 
 
