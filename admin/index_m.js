@@ -101,7 +101,9 @@ async function genProjectSelect(settings, onChange) {
 
 function getVisContent(dp, settings) {
     return new Promise(resolve => {
+        console.log('Vor sendto');
         sendTo(`${adapter}.${instance}`, dp, { config: { visProject: $('#visProject').val() || settings['visProject'] } }, (visData) => {
+           console.log('noch keine Daten');
             resolve(visData);
         });
     });
