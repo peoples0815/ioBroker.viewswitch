@@ -64,7 +64,7 @@ async function genProjectSelect(settings, onChange) {
         let $sel = $('#visProject');
         let arr = [];
 
-        const visData = /*await*/ getVisContent('projects', settings);
+        const visData = await getVisContent('projects', settings);
 
         if (visData.projectList == '') {
             arr.push['main'];
