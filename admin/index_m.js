@@ -1,5 +1,5 @@
 let projectsReady = false;
-
+//Test
 const Materialize = (typeof M !== 'undefined') ? M : Materialize,
     anime = (typeof M !== 'undefined') ? M.anime : anime,
     namespace = 'viewswitch.' + instance;
