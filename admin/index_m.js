@@ -64,7 +64,7 @@ async function genProjectSelect(settings, onChange) {
         let $sel = $('#visProject');
         let arr = [];
 
-        const visData = await getVisContent('projects', settings);
+        const visData = /*await*/ getVisContent('projects', settings);
 
         if (visData.projectList == '') {
             arr.push['main'];
@@ -80,7 +80,6 @@ async function genProjectSelect(settings, onChange) {
             id = settings['visProject'];
         }
 
-        
         arr.forEach(function (val) {
             //$('#counties').append('<option value="' + val[0] + '"' + (id === val[0] ? ' selected' : '') + '>' + val[1] + '</option>');
             $('#visProject').append('<option value="' + val + '"' + (id === val ? ' selected' : '') + '>' + val + ' </option>');
