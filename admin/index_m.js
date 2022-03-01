@@ -72,14 +72,14 @@ async function genProjectSelect(settings, onChange) {
             arr = visData.projectList;
         }
 
+        arr.sort();
         if (!settings['visProject'] || settings['visProject'] == '') {
-            $sel.html('<option value="allProjects" "selected">' + _('Select first') + '</option>');
+            $sel.html('<option value="allProjects" "selected">' + arr[0] + '</option>');
         } else {
             $sel.html();
             id = settings['visProject'];
         }
 
-        arr.sort();
         arr.forEach(function (val) {
             //$('#counties').append('<option value="' + val[0] + '"' + (id === val[0] ? ' selected' : '') + '>' + val[1] + '</option>');
             $('#visProject').append('<option value="' + val + '"' + (id === val ? ' selected' : '') + '>' + val + ' </option>');
