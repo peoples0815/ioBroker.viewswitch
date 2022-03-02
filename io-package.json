@@ -83,5 +83,19 @@
     "viewsTable": []
   },
   "objects": [],
-  "instanceObjects": []
+  "instanceObjects": [
+    {
+      "_id": "switchCounter",
+      "type": "state",
+      "common": {
+        "role": "indicator",
+        "name": "Time remaining until switching back to Home",
+        "type": "number",
+        "read": true,
+        "write": false,
+        "def": 0
+      },
+      "native": {}
+    }
+  ]
 }

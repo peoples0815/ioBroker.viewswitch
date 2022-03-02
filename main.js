@@ -83,8 +83,7 @@ class Viewswitch extends utils.Adapter {
 			})
 		} catch (e) {
 			this.log.error(e);
-		}
-					 
+		}				 
 	}
 	// read existing views
 	readViews(project) { 
@@ -101,6 +100,7 @@ class Viewswitch extends utils.Adapter {
 		}
 	}
 
+/*
 	// delete not longer existing views
 	async deleteVisObjects(arr){
 		try{
@@ -278,7 +278,7 @@ class Viewswitch extends utils.Adapter {
 			native: {},
 		});
 	}
-
+*/
 
 	
 
