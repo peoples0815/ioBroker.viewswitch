@@ -39,11 +39,12 @@ async function genViewList(settings, onChange) {
         for (var i in arr) {
             const _arr = {
                 viewName: arr[i],
-                swSec: null,
-                isHomeView: false,
+                swSec: 60,
+                //isHomeView: false,
                 isLockView: false,
                 showIAV: false
             }
+            i == 0 ? _arr[isHomeView] = true : _arr[isHomeView] = false
             viewsTable.push(_arr);
         }
         values2table('viewsTable', viewsTable, onChange, tableOnReady);

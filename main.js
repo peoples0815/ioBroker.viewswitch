@@ -100,187 +100,110 @@ class Viewswitch extends utils.Adapter {
 		}
 	}
 
-/*
-	// delete not longer existing views
-	async deleteVisObjects(arr){
-		try{
-			const states = await this.getStatesAsync('Views' + '.*');
-			for (const idS in states){
-				let nmb = idS.split('.')[3];
-				if(arr.includes(nmb)){
-					this.log.debug('View exists in Json: '+idS)
-				} else {
-					this.log.debug('View does NOT exist in Json: '+idS)
-					await this.delObjectAsync(idS);
-					await this.delObjectAsync(this.namespace + '.Views.' + nmb);
-				} 
+
+	/*******************************************************************************************************************************************************
+	// Switch immediately to Wishview
+	switchToViewImmediate(view){
+		adapter.setForeignState('vis.0.control.instance', 'FFFFFFFF');
+		adapter.setForeignState('vis.0.control.data', view);
+		adapter.setForeignState('vis.0.control.command', 'changeView');
+	}
+
+
+
+	// Switch to configured Homeview
+	async switchToHomeView() {
+		try {
+			const switchTimer = await adapter.getStateAsync('switchTimer');
+			const lockViewActive = await adapter.getStateAsync('lockViewActive');
+			const actualLockView = await adapter.getStateAsync('actualLockView');
+			const actualHomeView = await adapter.getStateAsync('actualHomeView');
+			const switchAutomatic = await adapter.getStateAsync('switchAutomatic');
+			const visInstance = await adapter.getForeignStateAsync('vis.0.control.instance');
+			if(switchAutomatic.val !== true){
+					if(actualHomeView.val == ''){
+						adapter.log.warning('!!!First define your HomeView!!!');
+					} else {
+						timerTout = await setTimeout(async function () {
+							let timer = parseInt(switchTimer.val, 10)
+							if(timer > 1){
+								if(lockViewActive.val === true){
+									if(timerTout) clearTimeout(timerTout);
+									await adapter.setStateAsync('switchTimer', 0);
+									if(actualLockView.val != actualLockView.val.split('/').pop()){
+										switchToViewImmediate(adapter.config.visProject+'/'+actualLockView.val);
+									}
+								} else {
+									await adapter.setStateAsync('switchTimer',timer - 1);
+									switchToHomeView(); 
+								}
+							} else {
+								await adapter.setStateAsync('switchTimer', 0);
+								//if(visInstance.val === undefined) 
+								await adapter.setForeignStateAsync('vis.0.control.instance', 'FFFFFFFF');
+								await adapter.setForeignStateAsync('vis.0.control.data', adapter.config.visProject + '/' + actualHomeView.val);
+								await adapter.setForeignStateAsync('vis.0.control.command', 'changeView');
+
+							}
+						}, 1000); 
+					}
 			}
-		} catch (err) {
-			this.log.error(err);
+		} catch (error) {
+		adapter.log.error(error);
 		}
 	}
 
-	// Create not existing Objects
-	createObjects(arr){
-		let startHomeView;
-////////////////////////////////////		
-		for(let i=0; i<arr.length;i++){
-			this.setObjectNotExistsAsync(viewFolder, {
-				type: 'channel',
-				common: {
-					name: 'Project Views' 
-				},
-				native: {},
-			});
-			this.setObjectNotExistsAsync(viewFolder + '.' + arr[i], {
-				type: 'channel',
-				common: {
-					name: arr[i]
-				},
-				native: {},
-			});
-			this.setObjectNotExistsAsync(viewFolder + '.' + arr[i] + '.showIAV', {
-				type: 'state',
-				common: {
-					name: 'View is shown in Autoview',
-					type: 'boolean',
-					def:  true,
-					role: 'value',
-					read: true,
-					write: true,
-				},
-				native: {},
-			});
-			
-			this.setObjectNotExistsAsync(viewFolder + '.' + arr[i] + '.sWSec', {
-				type: 'state',
-				common: {
-					name: 'Time this View is shown',
-					type: 'number',
-					def:  25,
-					role: 'value',
-					read: true,
-					unit:  's',
-					write: true,
-				},
-				native: {},
-			});
-			this.setObjectNotExistsAsync(viewFolder + '.' + arr[i] + '.isLockView', {
-				type: 'state',
-				common: {
-					name: 'View to be shown if lock is active',
-					type: 'boolean',
-					def:  false,
-					role: 'value',
-					read: true,
-					write: true,
-				},
-				native: {},
-			});
-			this.setObjectNotExistsAsync(viewFolder + '.' + arr[i] + '.isHomeView', {
-				type: 'state',
-				common: {
-					name: 'Homeview of Project',
-					type: 'boolean',
-					def:  i===0?true:false,
-					role: 'value',
-					read: true,
-					write: true,
-				},
-				native: {},
-			});
-			if(i===0){startHomeView = arr[i]}
-		};
-		this.setObjectNotExistsAsync('actualHomeView', {
-			type: 'state',
-			common: {
-				name: 'View what is set as Home',
-				type: 'string',
-				role: 'value',
-				def:  startHomeView,
-				read: true,
-				write: true,
-			},
-			native: {},
-		});
-		this.setObjectNotExistsAsync('actualLockView', {
-			type: 'state',
-			common: {
-				name: 'View what is set as Lockview',
-				type: 'string',
-				role: 'value',
-				def:  '',
-				read: true,
-				write: true,
-			},
-			native: {},
-		});
-		this.setObjectNotExistsAsync('lockViewActive', {
-			type: 'state',
-			common: {
-				name: 'Forces Lockview to be shown',
-				type: 'boolean',
-				def:  false,
-				role: 'value',
-				read: true,
-				write: true,
-			},
-			native: {},
-		});
-		this.setObjectNotExistsAsync('switchAutomatic', {
-			type: 'state',
-			common: {
-				name: 'Automatic change Views',
-				type: 'boolean',
-				def:  false,
-				role: 'value',
-				read: true,
-				write: true,
-			},
-			native: {},
-		});
-		this.setObjectNotExistsAsync('switchAutomaticTimer', {
-			type: 'state',
-			common: {
-				name: 'Timer for automatic View Change',
-				type: 'number',
-				role: 'value',
-				def:  0,
-				read: true,
-				unit: 's',
-				write: true,
-			
-			},
-			native: {},
-		});
-		this.setObjectNotExistsAsync('switchTimer', {
-			type: 'state',
-			common: {
-				name: 'Time to show actual View',
-				type: 'number',
-				role: 'value',
-				def:  0,
-				read: true,
-				unit: 's',
-				write: true,
-			},
-			native: {},
-		});
-		this.setObjectNotExistsAsync('existingProjects', {
-			type: 'state',
-			common: {
-				name: 'List of existing Projects',
-				type: 'string',
-				role: 'value',
-				read: true,
-				write: true,
-			},
-			native: {},
-		});
-	}
-*/
+// Automatic switch the existing Views
 
-	
+//...... Not working yet 
+// Timer läuft immer noch einmal durch
+
+	autoSwitchView(i){
+		try{
+			let viewArr = readViews(adapter.config.visProject);
+			const switchTimer = await adapter.getStateAsync('switchTimer');
+			const switchAutomatic = await adapter.getStateAsync('switchAutomatic');
+			const switchAutomaticTimer = await adapter.getStateAsync('switchAutomaticTimer');
+			const actualHomeView = await adapter.getStateAsync('actualHomeView');
+
+			if(switchAutomatic.val === true){
+				if(i == '') i = 0;
+				if(i < viewArr.length){
+					const showIAV = await adapter.getStateAsync(viewFolder + '.' + viewArr[i]+'.'+'showIAV');
+					if(showIAV.val === true){
+						let timerAutoSV = await setTimeout(async function () {
+							//if(switchTimer.val === 0 || switchTimer.val == '0') adapter.setState(switchTimer, switchAutomaticTimer.val)
+							let timer = parseInt(switchTimer.val, 10);
+							if (timer > 1) {
+								await adapter.setStateAsync('switchTimer', timer -1);
+								//await adapter.setStateAsync('switchAutomaticTimer', timer - 1);
+								autoSwitchView(i);
+							}
+							else{
+								await adapter.setStateAsync('switchTimer', switchAutomaticTimer.val);
+								if(switchAutomatic.val === true) switchToViewImmediate(adapter.config.visProject+'/'+viewArr[i]);
+								autoSwitchView((i+1));
+							}
+						}, 1000);
+					} else {
+						autoSwitchView((i+1));
+						adapter.log.info('For this View AV is disabled')
+					}
+				} else {
+					autoSwitchView(0);
+					adapter.log.info('Jump back to first AutoView')
+				}
+			} else {
+				if(timerAutoSV) clearTimeout(timerAutoSV);
+				await adapter.setStateAsync(switchTimer, 0);
+				switchToViewImmediate(adapter.config.visProject+'/'+actualHomeView.val);
+			}
+		} catch (error) {
+			adapter.log.error(error);
+		}
+	}
+
+*****************************************************************************************************************************************************************************************/	
 
 
 
