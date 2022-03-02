@@ -88,7 +88,7 @@ async function genProjectSelect(settings, onChange) {
         });
         $sel.select();
         $('.loadProjects').hide();
-        $('.firstStart').show();
+        //$('.firstStart').show();
 
         
         // Generate list if no view exists yet
@@ -150,7 +150,7 @@ function load(settings, onChange) {
 
     // Aufruf Projektliste
     $('.loadProjects').show();
-    $('.firstStart').hide();
+    //$('.firstStart').hide();
     
     genProjectSelect(settings, onChange);
 
