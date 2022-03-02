@@ -15,9 +15,9 @@ customPostOnSave.mydevices = function ($div, instance) {
 */
 function showHideElements(settings, onChange) {
     if ($('#visProj_').prop('checked')) {
-        $('.tab-Views').show();
-    } else {
         $('.tab-Views').hide();
+    } else {
+        $('.tab-Views').show();
     }
     $('#visProject').on('change', function () {
         if (projectsReady) {
@@ -27,7 +27,7 @@ function showHideElements(settings, onChange) {
 }
 
 async function genViewList(settings, onChange) {
-    if (settings['visProject']) {
+    if ($('#visProject').val()) {
         const visData = await getVisContent('views', settings);
 
         let arr = [];
@@ -71,21 +71,24 @@ async function genProjectSelect(settings, onChange) {
         } else {
             arr = visData.projectList;
         }
-
+        var notselected = false;
         arr.sort();
         if (!settings['visProject'] || settings['visProject'] == '') {
-            $sel.html('<option value="allProjects" "selected">' + arr[0] + '</option>');
+            $sel.html(`<option value="${arr[0]}" "selected">${arr[0]}</option>`);
+            notselected = true;
         } else {
             $sel.html();
             id = settings['visProject'];
         }
 
         arr.forEach(function (val) {
-            //$('#counties').append('<option value="' + val[0] + '"' + (id === val[0] ? ' selected' : '') + '>' + val[1] + '</option>');
-            $('#visProject').append('<option value="' + val + '"' + (id === val ? ' selected' : '') + '>' + val + ' </option>');
+            if ((notselected && val != arr[0]) || !notselected) {
+                $('#visProject').append('<option value="' + val + '"' + (id === val ? ' selected' : '') + '>' + val + ' </option>');
+            }
         });
         $sel.select();
-
+        $('.loadProjects').hide();
+        
         // Generate list if no view exists yet
         var _views = table2values('viewsTable');
 
@@ -101,14 +104,8 @@ async function genProjectSelect(settings, onChange) {
 
 function getVisContent(dp, settings) {
     return new Promise(resolve => {
-        var waitTime = 10;
-        socket.on('stateChange',async function (id, state) {
-            if (id === 'system.adapter.viewswitch.' + instance + '.alive') {
-                if (!state || !state.val) {
-                    waitTime = 3000;
-                }
-            }
-        });
+        var waitTime = settings.firstStart && dp == 'projects' ? 5000 : 100;
+
         setTimeout(async function () {
             sendTo(`${adapter}.${instance}`, dp, { config: { visProject: $('#visProject').val() || settings['visProject'] } }, (visData) => {
                 resolve(visData);
@@ -150,6 +147,7 @@ function load(settings, onChange) {
     M.updateTextFields();
 
     // Aufruf Projektliste
+    $('.loadProjects').show();
     genProjectSelect(settings, onChange);
 
 }
@@ -166,6 +164,8 @@ function save(callback) {
             obj[$this.attr('id')] = $this.val();
         }
     });
+    // set firstStart = false
+    obj.firstStart = false;
     // Get edited table
     obj.viewsTable = table2values('viewsTable');
     callback(obj);

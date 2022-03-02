@@ -67,18 +67,20 @@
     "materialize": true,
     "dependencies": [
       {
-        "js-controller": ">=2.0.0"
+        "js-controller": ">=3.3.0"
       }
-    ],
-    "installedFrom": "peoples0815/ioBroker.viewswitch#0d2db5fc6265a5db131b3dc078a1e4c540f65300"
+    ]
   },
   "adminUI": {
     "config": "materialize",
     "tab": "materialize"
   },
   "native": {
-    "option1": true,
-    "option2": "42"
+    "firstStart": true,
+    "visProj_": false,
+    "visProject": "",
+    "autoSwitch": false,
+    "viewsTable": []
   },
   "objects": [],
   "instanceObjects": []
