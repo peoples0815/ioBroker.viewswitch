@@ -87,7 +87,7 @@ async function genProjectSelect(settings, onChange) {
             }
         });
         $sel.select();
-        $('.loadProjects').hide();
+        //$('.loadProjects').hide();
         //$('.firstStart').show();
 
         
@@ -149,7 +149,7 @@ function load(settings, onChange) {
     M.updateTextFields();
 
     // Aufruf Projektliste
-    $('.loadProjects').show();
+   // $('.loadProjects').show();
     //$('.firstStart').hide();
     
     genProjectSelect(settings, onChange);
