@@ -27,7 +27,7 @@ function showHideElements(settings, onChange) {
 }
 
 async function genViewList(settings, onChange) {
-    if (settings['visProject']) {
+    if ($('#visProject').val()) {
         const visData = await getVisContent('views', settings);
 
         let arr = [];
@@ -71,21 +71,24 @@ async function genProjectSelect(settings, onChange) {
         } else {
             arr = visData.projectList;
         }
-
+        var notselected = false;
         arr.sort();
         if (!settings['visProject'] || settings['visProject'] == '') {
-            $sel.html('<option value="allProjects" "selected">' + arr[0] + '</option>');
+            $sel.html(`<option value="${arr[0]}" "selected">${arr[0]}</option>`);
+            notselected = true;
         } else {
             $sel.html();
             id = settings['visProject'];
         }
 
         arr.forEach(function (val) {
-            //$('#counties').append('<option value="' + val[0] + '"' + (id === val[0] ? ' selected' : '') + '>' + val[1] + '</option>');
-            $('#visProject').append('<option value="' + val + '"' + (id === val ? ' selected' : '') + '>' + val + ' </option>');
+            if ((notselected && val != arr[0]) || !notselected) {
+                $('#visProject').append('<option value="' + val + '"' + (id === val ? ' selected' : '') + '>' + val + ' </option>');
+            }
         });
         $sel.select();
         $('.loadProjects').hide();
+        
         // Generate list if no view exists yet
         var _views = table2values('viewsTable');
 
@@ -101,7 +104,7 @@ async function genProjectSelect(settings, onChange) {
 
 function getVisContent(dp, settings) {
     return new Promise(resolve => {
-        var waitTime = settings.firstStart ? 5000 : 100;
+        var waitTime = settings.firstStart && dp == 'projects' ? 5000 : 100;
 
         setTimeout(async function () {
             sendTo(`${adapter}.${instance}`, dp, { config: { visProject: $('#visProject').val() || settings['visProject'] } }, (visData) => {
