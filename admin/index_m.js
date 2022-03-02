@@ -29,9 +29,7 @@ function showHideElements(settings, onChange) {
 async function genViewList(settings, onChange) {
     if ($('#visProject').val()) {
         const visData = await getVisContent('views', settings);
-
         let arr = [];
-
         viewsTable = [];
         arr = visData.viewList;
         arr.sort();
@@ -40,11 +38,11 @@ async function genViewList(settings, onChange) {
             const _arr = {
                 viewName: arr[i],
                 swSec: 60,
-                //isHomeView: false,
+                isHomeView: false,
                 isLockView: false,
                 showIAV: false
             }
-            i == 0 ? _arr[isHomeView] = true : _arr[isHomeView] = false
+            i == 0 ? _arr.isHomeView = true : '';
             viewsTable.push(_arr);
         }
         values2table('viewsTable', viewsTable, onChange, tableOnReady);
