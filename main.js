@@ -110,7 +110,7 @@ class Viewswitch extends utils.Adapter {
 	}
 
 
-
+/*
 	// Switch to configured Homeview this.config........
 	async switchToHomeView() {
 		try {
@@ -118,7 +118,7 @@ class Viewswitch extends utils.Adapter {
 			const lockViewActive = await this.getStateAsync('lockViewActive');
 			const visInstance = await adapter.getForeignStateAsync('vis.0.control.instance');
 
-			
+
 			if(switchAutomatic.val !== true){
 					if(actualHomeView.val == ''){
 						adapter.log.warning('!!!First define your HomeView!!!');
@@ -203,7 +203,7 @@ class Viewswitch extends utils.Adapter {
 	}
 
 
-
+*/
 
 	/**
 	 * Is called when databases are connected and adapter received configuration.
