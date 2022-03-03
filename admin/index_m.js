@@ -117,6 +117,7 @@ function getVisContent(dp, settings) {
 
 // This will be called by the admin adapter when the settings page loads
 function load(settings, onChange) {
+    $('.progressBar').hide();
     // example: select elements with id=key and class=value and insert value
     //////////////////////////
     if (!settings) return;
@@ -148,7 +149,7 @@ function load(settings, onChange) {
     M.updateTextFields();
 
     // Aufruf Projektliste
-   $('.progressBar').show();
+    if(settings.firstStart === true)   $('.progressBar').show();
     //$('.firstStart').hide();
     
     genProjectSelect(settings, onChange);
