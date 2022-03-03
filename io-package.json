@@ -85,12 +85,25 @@
   "objects": [],
   "instanceObjects": [
     {
-      "_id": "switchCounter",
+      "_id": "switchTimer",
       "type": "state",
       "common": {
         "role": "indicator",
         "name": "Time remaining until switching back to Home",
         "type": "number",
+        "read": true,
+        "write": false,
+        "def": 0
+      },
+      "native": {}
+    },
+    {
+      "_id": "lockViewActive",
+      "type": "state",
+      "common": {
+        "role": "switch",
+        "name": "Vis-Views are locked",
+        "type": "boolean",
         "read": true,
         "write": false,
         "def": 0
