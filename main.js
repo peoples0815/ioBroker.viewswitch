@@ -101,7 +101,7 @@ class Viewswitch extends utils.Adapter {
 	}
 
 
-	/*******************************************************************************************************************************************************
+	
 	// Switch immediately to Wishview
 	switchToViewImmediate(view){
 		adapter.setForeignState('vis.0.control.instance', 'FFFFFFFF');
@@ -111,15 +111,14 @@ class Viewswitch extends utils.Adapter {
 
 
 
-	// Switch to configured Homeview
+	// Switch to configured Homeview this.config........
 	async switchToHomeView() {
 		try {
-			const switchTimer = await adapter.getStateAsync('switchTimer');
-			const lockViewActive = await adapter.getStateAsync('lockViewActive');
-			const actualLockView = await adapter.getStateAsync('actualLockView');
-			const actualHomeView = await adapter.getStateAsync('actualHomeView');
-			const switchAutomatic = await adapter.getStateAsync('switchAutomatic');
+			const switchTimer = await this.getStateAsync('switchTimer');
+			const lockViewActive = await this.getStateAsync('lockViewActive');
 			const visInstance = await adapter.getForeignStateAsync('vis.0.control.instance');
+
+			
 			if(switchAutomatic.val !== true){
 					if(actualHomeView.val == ''){
 						adapter.log.warning('!!!First define your HomeView!!!');
@@ -203,7 +202,6 @@ class Viewswitch extends utils.Adapter {
 		}
 	}
 
-*****************************************************************************************************************************************************************************************/	
 
 
 
