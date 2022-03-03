@@ -87,7 +87,8 @@ async function genProjectSelect(settings, onChange) {
         });
         $sel.select();
         $('.progressBar').hide();
-        //$('.firstStart').show();
+        $('.waitMessage').hide();
+        $('.waitVisibility').show();
 
         
         // Generate list if no view exists yet
