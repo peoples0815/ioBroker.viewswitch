@@ -120,9 +120,10 @@ function load(settings, onChange) {
     // Aufruf Projektliste
     if(settings.firstStart === true){
         $('.progressBar').show();
+        $('.waitVisibility').hide();
     } else {
-    //$('.firstStart').hide();
         $('.progressBar').hide();
+        $('.waitVisibility').show();
     }
     // example: select elements with id=key and class=value and insert value
     //////////////////////////
