@@ -110,115 +110,60 @@ class Viewswitch extends utils.Adapter {
 	}
 
 
-/*
+
 	// Switch to configured Homeview this.config........
-	async switchToHomeView() {
+	async switchToHomeView(data) {
 		try {
 			const switchTimer = await this.getStateAsync('switchTimer');
 			const lockViewActive = await this.getStateAsync('lockViewActive');
-			const visInstance = await adapter.getForeignStateAsync('vis.0.control.instance');
+			const visInstance = await this.getForeignStateAsync('vis.0.control.instance');
+	//state vis.0.control.data changed: main/Main_View1 (ack = false)
+			let project = data.split('/')[0];
+			let view = data.split('/')[1];
+			
+			let position = await this.config.viewsTable.findIndex(obj => obj.viewName == view)
+
+			if(await this.config.viewsTable[position].isHomeView === false){
+				if(parseInt(await this.config.viewsTable[position].swSec) > 0){
+					await this.setStateAsync('switchTimer', parseInt(await this.config.viewsTable[position].swSec), true);
 
 
-			if(switchAutomatic.val !== true){
-					if(actualHomeView.val == ''){
-						adapter.log.warning('!!!First define your HomeView!!!');
-					} else {
-						timerTout = await setTimeout(async function () {
-							let timer = parseInt(switchTimer.val, 10)
-							if(timer > 1){
-								if(lockViewActive.val === true){
-									if(timerTout) clearTimeout(timerTout);
-									await adapter.setStateAsync('switchTimer', 0);
-									if(actualLockView.val != actualLockView.val.split('/').pop()){
-										switchToViewImmediate(adapter.config.visProject+'/'+actualLockView.val);
-									}
-								} else {
-									await adapter.setStateAsync('switchTimer',timer - 1);
-									switchToHomeView(); 
-								}
+					/*
+					// eigentlicher Timer
+					timerTout = await setTimeout(async function () {
+							if(switchTimer > 1){
+								this.setState('switchTimer',switchTimer - 1);
+								switchToHomeView(data);
 							} else {
-								await adapter.setStateAsync('switchTimer', 0);
+								this.setState('switchTimer', 0);
 								//if(visInstance.val === undefined) 
-								await adapter.setForeignStateAsync('vis.0.control.instance', 'FFFFFFFF');
-								await adapter.setForeignStateAsync('vis.0.control.data', adapter.config.visProject + '/' + actualHomeView.val);
-								await adapter.setForeignStateAsync('vis.0.control.command', 'changeView');
+								//await this.setForeignStateAsync('vis.0.control.instance', 'FFFFFFFF');
+								//await this.setForeignStateAsync('vis.0.control.data', this.config.visProject + '/' + actualHomeView.val);
+								//await this.setForeignStateAsync('vis.0.control.command', 'changeView');
 
 							}
-						}, 1000); 
-					}
-			}
-		} catch (error) {
-		adapter.log.error(error);
-		}
-	}
-
-// Automatic switch the existing Views
-
-//...... Not working yet 
-// Timer läuft immer noch einmal durch
-
-	autoSwitchView(i){
-		try{
-			let viewArr = readViews(adapter.config.visProject);
-			const switchTimer = await adapter.getStateAsync('switchTimer');
-			const switchAutomatic = await adapter.getStateAsync('switchAutomatic');
-			const switchAutomaticTimer = await adapter.getStateAsync('switchAutomaticTimer');
-			const actualHomeView = await adapter.getStateAsync('actualHomeView');
-
-			if(switchAutomatic.val === true){
-				if(i == '') i = 0;
-				if(i < viewArr.length){
-					const showIAV = await adapter.getStateAsync(viewFolder + '.' + viewArr[i]+'.'+'showIAV');
-					if(showIAV.val === true){
-						let timerAutoSV = await setTimeout(async function () {
-							//if(switchTimer.val === 0 || switchTimer.val == '0') adapter.setState(switchTimer, switchAutomaticTimer.val)
-							let timer = parseInt(switchTimer.val, 10);
-							if (timer > 1) {
-								await adapter.setStateAsync('switchTimer', timer -1);
-								//await adapter.setStateAsync('switchAutomaticTimer', timer - 1);
-								autoSwitchView(i);
-							}
-							else{
-								await adapter.setStateAsync('switchTimer', switchAutomaticTimer.val);
-								if(switchAutomatic.val === true) switchToViewImmediate(adapter.config.visProject+'/'+viewArr[i]);
-								autoSwitchView((i+1));
-							}
-						}, 1000);
-					} else {
-						autoSwitchView((i+1));
-						adapter.log.info('For this View AV is disabled')
-					}
-				} else {
-					autoSwitchView(0);
-					adapter.log.info('Jump back to first AutoView')
+					}, 1000); 
+					*/
 				}
-			} else {
-				if(timerAutoSV) clearTimeout(timerAutoSV);
-				await adapter.setStateAsync(switchTimer, 0);
-				switchToViewImmediate(adapter.config.visProject+'/'+actualHomeView.val);
 			}
-		} catch (error) {
-			adapter.log.error(error);
+
+
+		} catch (e) {
+		this.log.error(e);
 		}
 	}
 
-
-*/
 
 	/**
 	 * Is called when databases are connected and adapter received configuration.
 	 */
 	async onReady() {
-		/*
 		try {
-		    //let result = this.readViews(this.config.visProject);//this.readViews('');
-			//this.createObjects(result);
-			//this.deleteVisObjects(this.readViews(this.config.visProject));
-			//this.generateProjectList(dirPath, viewsJsonFile);
+		    let result = this.switchToHomeView('main/Main_View3');
         } catch (error) {
 			this.log.info(error); 
         }
-		*/
+		
 		/*
 		try {
 			this.createObjects(dirPath, viewsJsonFile);
@@ -231,8 +176,8 @@ class Viewswitch extends utils.Adapter {
 
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via
 		// this.config:
-		this.log.info('config option1: ' + this.config.option1);
-		this.log.info('config option2: ' + this.config.option2);
+		//this.log.info('config option1: ' + this.config.option1);
+		this.log.info('------------------------------------------------------------------------------')
 
 		/*
 		For every state in the system there has to be also an object of type state
@@ -274,7 +219,7 @@ class Viewswitch extends utils.Adapter {
 		// this.subscribeStates('lights.*');
 		// Or, if you really must, you can also watch all states. Don't do this if you don't need to. Otherwise this will cause a lot of unnecessary load on the system:
 		// this.subscribeStates('*');
-
+		this.subscribeForeignStates('vis.*.control.data');
 		/*
 			setState examples
 			you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
@@ -319,8 +264,7 @@ class Viewswitch extends utils.Adapter {
 			// clearTimeout(timeout1);
 			// clearTimeout(timeout2);
 			// ...
-			// clearInterval(interval1);
-
+			clearInterval(intervalTimer);
 			callback();
 		} catch (e) {
 			callback();
@@ -334,23 +278,34 @@ class Viewswitch extends utils.Adapter {
 	//  * @param {string} id
 	//  * @param {ioBroker.Object | null | undefined} obj
 	//  */
-	// onObjectChange(id, obj) {
+	//onObjectChange(id, obj) {
 	// 	if (obj) {
-	// 		// The object was changed
+	 		// The object was changed
 	// 		this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
 	// 	} else {
-	// 		// The object was deleted
+	 		// The object was deleted
 	// 		this.log.info(`object ${id} deleted`);
 	// 	}
-	// }
+	//}
+
+	
+
+
+
 
 	/**
 	 * Is called if a subscribed state changes
 	 * @param {string} id
 	 * @param {ioBroker.State | null | undefined} state
 	 */
+
+
+	//state vis.0.control.data changed: main/Main_View1 (ack = false)
 	onStateChange(id, state) {
 		if (state) {
+			if(id =='vis.0.control.data' ) {
+				this.switchToHomeView(state);
+			}
 			// The state was changed
 			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
 		} else {
@@ -366,22 +321,6 @@ class Viewswitch extends utils.Adapter {
 	//  * @param {ioBroker.Message} obj
 	//  */
 	/*
-	onMessage(obj) {
-		if (typeof obj === 'object' && obj.message) {
-			if (obj.command === 'send') {
-				this.log.info('--------------------------------------------------------------------------------------------------')
-				const visData = {}//new Object();
-				
-				visData.projectList = 'main'//this.readProjects();
-				visData.viewList = this.readViews('main');//readViews(adapter.config.visProject);
-				this.log.info(visData.viewList);
-				this.log.info('--------------------------------------------------------------------------------------------------')
-				
-				// Send response in callback if required
-				if (obj.callback) this.sendTo(obj.from, obj.command, visData, obj.callback);
-			}
-		}
-   	}  
 	*/
  	
 	async onMessage(obj) {

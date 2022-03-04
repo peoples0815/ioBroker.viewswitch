@@ -37,7 +37,7 @@ async function genViewList(settings, onChange) {
         for (var i in arr) {
             const _arr = {
                 viewName: arr[i],
-                swSec: 60,
+                swSec:60,
                 isHomeView: false,
                 isLockView: false,
                 showIAV: false

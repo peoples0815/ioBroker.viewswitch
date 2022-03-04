@@ -106,7 +106,7 @@
         "type": "boolean",
         "read": true,
         "write": false,
-        "def": true
+        "def": false
       },
       "native": {}
     }
