@@ -106,7 +106,7 @@
         "name": "Vis-Views are locked",
         "type": "boolean",
         "read": true,
-        "write": false,
+        "write": true,
         "def": false
       },
       "native": {}
