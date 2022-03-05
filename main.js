@@ -111,22 +111,44 @@ class Viewswitch extends utils.Adapter {
 
 
 
-	// Switch to configured Homeview this.config........
+	// Switch to configured Homeview this.config........                                                                          Vor Timerstart noch prüfen ob homeview oder nicht
 	async switchToHomeView(data) {
 		try {
-			const switchTimer = await this.getStateAsync('switchTimer');
 			const lockViewActive = await this.getStateAsync('lockViewActive');
 			const visInstance = await this.getForeignStateAsync('vis.0.control.instance');
 	//state vis.0.control.data changed: main/Main_View1 (ack = false)
 			let project = data.split('/')[0];
 			let view = data.split('/')[1];
 			
-			let position = await this.config.viewsTable.findIndex(obj => obj.viewName == view)
+			let posView = await this.config.viewsTable.findIndex(obj => obj.viewName == view)
 
-			if(await this.config.viewsTable[position].isHomeView === false){
-				if(parseInt(await this.config.viewsTable[position].swSec) > 0){
-					await this.setStateAsync('switchTimer', parseInt(await this.config.viewsTable[position].swSec), true);
+			if(await this.config.viewsTable[posView].isHomeView === false){
+				if(parseInt(await this.config.viewsTable[posView].swSec) > 0){
+					await this.setStateAsync('switchTimer', parseInt(await this.config.viewsTable[posView].swSec), true);
 
+					let timer = parseInt(await this.config.viewsTable[posView].swSec);
+					
+					let viewCountdown = setInterval(async () => {
+						timer = timer -1;
+						this.log.info(timer);
+						await this.setStateAsync('switchTimer', timer, true);
+						if(timer == 0){
+							clearInterval(viewCountdown)
+							let posHomeView = await this.config.viewsTable.findIndex(obj => obj.isHomeView === true)
+							this.log.info('fertig')
+							if(visInstance.val === undefined || this.config.swAllInstances === true) {
+								await this.setForeignStateAsync('vis.0.control.instance', 'FFFFFFFF');
+							} else {
+								await this.setForeignStateAsync('vis.0.control.instance', visInstance);
+							}
+							await this.setForeignStateAsync('vis.0.control.data', project + '/' + this.config.viewsTable[posHomeView].viewName);
+							await this.setForeignStateAsync('vis.0.control.command', 'changeView');
+							
+						}
+						
+						
+					}, 1000);
+					  
 
 					/*
 					// eigentlicher Timer
@@ -158,12 +180,13 @@ class Viewswitch extends utils.Adapter {
 	 * Is called when databases are connected and adapter received configuration.
 	 */
 	async onReady() {
+		/*
 		try {
 		    let result = this.switchToHomeView('main/Main_View3');
         } catch (error) {
 			this.log.info(error); 
         }
-		
+		*/
 		/*
 		try {
 			this.createObjects(dirPath, viewsJsonFile);
@@ -264,7 +287,7 @@ class Viewswitch extends utils.Adapter {
 			// clearTimeout(timeout1);
 			// clearTimeout(timeout2);
 			// ...
-			clearInterval(intervalTimer);
+			clearInterval(viewCountdown)
 			callback();
 		} catch (e) {
 			callback();
@@ -304,7 +327,9 @@ class Viewswitch extends utils.Adapter {
 	onStateChange(id, state) {
 		if (state) {
 			if(id =='vis.0.control.data' ) {
-				this.switchToHomeView(state);
+				//this.switchToHomeView(state);
+				//test
+				this.switchToHomeView('main/Main_View3')
 			}
 			// The state was changed
 			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);

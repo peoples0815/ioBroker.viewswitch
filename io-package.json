@@ -80,6 +80,7 @@
     "visProj_": false,
     "visProject": "",
     "autoSwitch": false,
+    "swAllInstances": false,
     "viewsTable": []
   },
   "objects": [],
