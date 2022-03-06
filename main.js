@@ -15,9 +15,6 @@ const dirPath        = '/opt/iobroker/iobroker-data/files/vis.0/';
 const viewsJsonFile  = '/vis-views.json'
 let adapter;
 
-let viewFolder = 'Views';
-
-let timerTout;
 let i = 0;
 
 
@@ -124,7 +121,7 @@ class Viewswitch extends utils.Adapter {
 			let posHomeView = await this.config.viewsTable.findIndex(obj => obj.isHomeView === true)
 
 			
-			if(lockViewActive === true){ 
+			if(lockViewActive.val === true){ 
 				this.log.info('--- Lockview is aktive ---')
 				this.switchToLockView();
 				
@@ -145,7 +142,7 @@ class Viewswitch extends utils.Adapter {
 								if(visInstance.val === undefined || this.config.swAllInstances === true) {
 									await this.setForeignStateAsync('vis.0.control.instance', 'FFFFFFFF');
 								} else {
-									await this.setForeignStateAsync('vis.0.control.instance', visInstance);
+									await this.setForeignStateAsync('vis.0.control.instance', visInstance.val);
 								}
 								await this.setForeignStateAsync('vis.0.control.data', project + '/' + this.config.viewsTable[posHomeView].viewName);
 								await this.setForeignStateAsync('vis.0.control.command', 'changeView');
@@ -155,31 +152,47 @@ class Viewswitch extends utils.Adapter {
 				}
 			} 
 
-
 		} catch (e) {
 		this.log.error(e);
 		}
 	}
 
 
-	async switchToLockView() {
+	async switchToLockView(state) {
 		try{
-			let posLockView = await this.config.viewsTable.findIndex(obj => obj.isLockView == view)
+			
+			const data = await this.getForeignStateAsync('vis.0.control.data')
+			const visInstance = await this.getForeignStateAsync('vis.0.control.instance');
+			let project = data.val.split('/')[0];
+			let view = data.val.split('/')[1];
+			let posHomeView = await this.config.viewsTable.findIndex(obj => obj.isHomeView === true)
+			let posLockView = await this.config.viewsTable.findIndex(obj => obj.isLockView === true)
 
-			if(posLockView == -1){
-				this.log.info('No Lockview configured in Settings, LockViewActive is set to false. Please configure one View as Lockview first!')
-				await this.setStateAsync('lockViewActive', false, true);
-			} else {
-				if(await this.config.viewsTable[posLockView].viewName != view){
-					if(visInstance.val === undefined || this.config.swAllInstances === true) {
-						await this.setForeignStateAsync('vis.0.control.instance', 'FFFFFFFF');
-					} else {
-						await this.setForeignStateAsync('vis.0.control.instance', visInstance);
+			if(state === true){
+				if(posLockView == -1){
+					this.log.info('No Lockview configured in Settings, LockViewActive is set to false. Please configure one View as Lockview first!')
+					await this.setStateAsync('lockViewActive', false, true);
+				} else {
+					if(await this.config.viewsTable[posLockView].viewName != view){
+						if(visInstance.val === undefined || this.config.swAllInstances === true) {
+							await this.setForeignStateAsync('vis.0.control.instance', 'FFFFFFFF');
+						} else {
+							await this.setForeignStateAsync('vis.0.control.instance', visInstance.val);
+						}
+						await this.setForeignStateAsync('vis.0.control.data', project + '/' + this.config.viewsTable[posLockView].viewName);
+						await this.setForeignStateAsync('vis.0.control.command', 'changeView');
 					}
-					await this.setForeignStateAsync('vis.0.control.data', project + '/' + this.config.viewsTable[posLockView].viewName);
-					await this.setForeignStateAsync('vis.0.control.command', 'changeView');
 				}
+			} else {
+				if(visInstance.val === undefined || this.config.swAllInstances === true) {
+					await this.setForeignStateAsync('vis.0.control.instance', 'FFFFFFFF');
+				} else {
+					await this.setForeignStateAsync('vis.0.control.instance', visInstance.val);
+				}
+				await this.setForeignStateAsync('vis.0.control.data', project + '/' + this.config.viewsTable[posHomeView].viewName);
+				await this.setForeignStateAsync('vis.0.control.command', 'changeView');
 			}
+			
 		} catch (e) {
 			this.log.error(e);
 		}
@@ -211,7 +224,7 @@ class Viewswitch extends utils.Adapter {
 		// this.config:
 		//this.log.info('config option1: ' + this.config.option1);
 		this.log.info('----------------------------------- Adapter Start -------------------------------------------')
-
+		
 		/*
 		For every state in the system there has to be also an object of type state
 		Here a simple template for a boolean variable named "testVariable"
@@ -337,15 +350,16 @@ class Viewswitch extends utils.Adapter {
 	//state vis.0.control.data changed: main/Main_View1 (ack = false)
 	onStateChange(id, state) {
 		if (state) {
-			if(id =='vis.0.control.data' ) {
-				this.switchToHomeView(state.val);
-				//test	
-			}
-			if(id == 'lockViewActive'){
-				this.log.info(state.val)//${adapter}.${instance}
-			}
-			// The state was changed
-			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+			switch (id) {
+                case 'vis.0.control.data': {
+                    this.switchToHomeView(state.val);
+                    break;
+                }
+				case this.namespace+'.lockViewActive':{
+					this.switchToLockView(state.val);
+                    break;
+				}
+            }
 		} else {
 			// The state was deleted
 			this.log.info(`state ${id} deleted`);
