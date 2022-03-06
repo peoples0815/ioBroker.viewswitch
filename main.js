@@ -121,22 +121,13 @@ class Viewswitch extends utils.Adapter {
 			let view = data.split('/')[1];
 			
 			let posView = await this.config.viewsTable.findIndex(obj => obj.viewName == view)
-			let posLockView = await this.config.viewsTable.findIndex(obj => obj.isLockView == view)
 			let posHomeView = await this.config.viewsTable.findIndex(obj => obj.isHomeView === true)
 
 			
-			if(lockViewActive === true && poLockView != -1){ 
+			if(lockViewActive === true){ 
 				this.log.info('--- Lockview is aktive ---')
+				this.switchToLockView();
 				
-				if(await this.config.viewsTable[posLockView].viewName != view){
-					if(visInstance.val === undefined || this.config.swAllInstances === true) {
-						await this.setForeignStateAsync('vis.0.control.instance', 'FFFFFFFF');
-					} else {
-						await this.setForeignStateAsync('vis.0.control.instance', visInstance);
-					}
-					await this.setForeignStateAsync('vis.0.control.data', project + '/' + this.config.viewsTable[posLockView].viewName);
-					await this.setForeignStateAsync('vis.0.control.command', 'changeView');
-				}
 			} else {
 				if(await this.config.viewsTable[posView].isHomeView === false){
 					if(parseInt(await this.config.viewsTable[posView].swSec) > 0){
@@ -169,6 +160,31 @@ class Viewswitch extends utils.Adapter {
 		this.log.error(e);
 		}
 	}
+
+
+	async switchToLockView() {
+		try{
+			let posLockView = await this.config.viewsTable.findIndex(obj => obj.isLockView == view)
+
+			if(posLockView == -1){
+				this.log.info('No Lockview configured in Settings, LockViewActive is set to false. Please configure one View as Lockview first!')
+				await this.setStateAsync('lockViewActive', false, true);
+			} else {
+				if(await this.config.viewsTable[posLockView].viewName != view){
+					if(visInstance.val === undefined || this.config.swAllInstances === true) {
+						await this.setForeignStateAsync('vis.0.control.instance', 'FFFFFFFF');
+					} else {
+						await this.setForeignStateAsync('vis.0.control.instance', visInstance);
+					}
+					await this.setForeignStateAsync('vis.0.control.data', project + '/' + this.config.viewsTable[posLockView].viewName);
+					await this.setForeignStateAsync('vis.0.control.command', 'changeView');
+				}
+			}
+		} catch (e) {
+			this.log.error(e);
+		}
+	}
+
 
 
 	/**
@@ -236,6 +252,7 @@ class Viewswitch extends utils.Adapter {
 		// this.subscribeStates('lights.*');
 		// Or, if you really must, you can also watch all states. Don't do this if you don't need to. Otherwise this will cause a lot of unnecessary load on the system:
 		// this.subscribeStates('*');
+		this.subscribeStates('lockViewActive');
 		this.subscribeForeignStates('vis.*.control.data');
 		/*
 			setState examples
@@ -252,11 +269,11 @@ class Viewswitch extends utils.Adapter {
 		//await this.setStateAsync('testVariable', { val: true, ack: true, expire: 30 });
 
 		// examples for the checkPassword/checkGroup functions
-		let result = await this.checkPasswordAsync('admin', 'iobroker');
-		this.log.info('check user admin pw iobroker: ' + result);
+		//let result = await this.checkPasswordAsync('admin', 'iobroker');
+		//this.log.info('check user admin pw iobroker: ' + result);
 
-		result = await this.checkGroupAsync('admin', 'admin');
-		this.log.info('check group user admin group admin: ' + result);
+		//result = await this.checkGroupAsync('admin', 'admin');
+		//this.log.info('check group user admin group admin: ' + result);
 
 
 
@@ -322,8 +339,10 @@ class Viewswitch extends utils.Adapter {
 		if (state) {
 			if(id =='vis.0.control.data' ) {
 				this.switchToHomeView(state.val);
-				//test
-				
+				//test	
+			}
+			if(id == 'lockViewActive'){
+				this.log.info(state.val)//${adapter}.${instance}
 			}
 			// The state was changed
 			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
