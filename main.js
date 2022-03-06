@@ -114,15 +114,30 @@ class Viewswitch extends utils.Adapter {
 	// Switch to configured Homeview this.config........                                                                        
 	async switchToHomeView(data) {
 		try {
-			const lockViewActive = await this.getStateAsync('lockViewActive').val;
-			const visInstance = await this.getForeignStateAsync('vis.0.control.instance').val;
+			const lockViewActive = await this.getStateAsync('lockViewActive');
+			const visInstance = await this.getForeignStateAsync('vis.0.control.instance');
 	//state vis.0.control.data changed: main/Main_View1 (ack = false)
 			let project = data.split('/')[0];
 			let view = data.split('/')[1];
 			
 			let posView = await this.config.viewsTable.findIndex(obj => obj.viewName == view)
+			let posLockView = await this.config.viewsTable.findIndex(obj => obj.isLockView == view)
+			let posHomeView = await this.config.viewsTable.findIndex(obj => obj.isHomeView === true)
 
-			if(lockViewActive == false){
+			
+			if(lockViewActive === true && poLockView != -1){ 
+				this.log.info('--- Lockview is aktive ---')
+				
+				if(await this.config.viewsTable[posLockView].viewName != view){
+					if(visInstance.val === undefined || this.config.swAllInstances === true) {
+						await this.setForeignStateAsync('vis.0.control.instance', 'FFFFFFFF');
+					} else {
+						await this.setForeignStateAsync('vis.0.control.instance', visInstance);
+					}
+					await this.setForeignStateAsync('vis.0.control.data', project + '/' + this.config.viewsTable[posLockView].viewName);
+					await this.setForeignStateAsync('vis.0.control.command', 'changeView');
+				}
+			} else {
 				if(await this.config.viewsTable[posView].isHomeView === false){
 					if(parseInt(await this.config.viewsTable[posView].swSec) > 0){
 						await this.setStateAsync('switchTimer', parseInt(await this.config.viewsTable[posView].swSec), true);
@@ -135,7 +150,6 @@ class Viewswitch extends utils.Adapter {
 							await this.setStateAsync('switchTimer', timer, true);
 							if(timer == 0){
 								clearInterval(viewCountdown)
-								let posHomeView = await this.config.viewsTable.findIndex(obj => obj.isHomeView === true)
 								this.log.info('fertig')
 								if(visInstance.val === undefined || this.config.swAllInstances === true) {
 									await this.setForeignStateAsync('vis.0.control.instance', 'FFFFFFFF');
@@ -144,34 +158,11 @@ class Viewswitch extends utils.Adapter {
 								}
 								await this.setForeignStateAsync('vis.0.control.data', project + '/' + this.config.viewsTable[posHomeView].viewName);
 								await this.setForeignStateAsync('vis.0.control.command', 'changeView');
-								
-							}
-							
-							
+							}	
 						}, 1000);
-						
-
-						/*
-						// eigentlicher Timer
-						timerTout = await setTimeout(async function () {
-								if(switchTimer > 1){
-									this.setState('switchTimer',switchTimer - 1);
-									switchToHomeView(data);
-								} else {
-									this.setState('switchTimer', 0);
-									//if(visInstance.val === undefined) 
-									//await this.setForeignStateAsync('vis.0.control.instance', 'FFFFFFFF');
-									//await this.setForeignStateAsync('vis.0.control.data', this.config.visProject + '/' + actualHomeView.val);
-									//await this.setForeignStateAsync('vis.0.control.command', 'changeView');
-
-								}
-						}, 1000); 
-						*/
 					}
 				}
-			} else {
-				this.log.info('--- Lockview is aktive ---')
-			}
+			} 
 
 
 		} catch (e) {
@@ -203,7 +194,7 @@ class Viewswitch extends utils.Adapter {
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via
 		// this.config:
 		//this.log.info('config option1: ' + this.config.option1);
-		this.log.info('------------------------------------------------------------------------------')
+		this.log.info('----------------------------------- Adapter Start -------------------------------------------')
 
 		/*
 		For every state in the system there has to be also an object of type state
