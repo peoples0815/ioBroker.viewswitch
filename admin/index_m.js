@@ -87,7 +87,10 @@ async function genProjectSelect(settings, onChange) {
 
         arr.forEach(function (val) {
             if ((notselected && val != arr[0]) || !notselected) {
-                $('#visProject').append('<option value="' + val + '"' + (id === val ? ' selected' : '') + '>' + val + ' </option>');
+                // Original von Simatec
+                //$('#visProject').append('<option value="' + val + '"' + (id === val ? ' selected' : '') + '>' + val + ' </option>');
+                $('#visProject').append('<option value="" selected') + '>' + _('Select first') +' </option>';
+                $('.tab-Views').hide();
             }
         });
         $sel.select();
