@@ -14,18 +14,25 @@ customPostOnSave.mydevices = function ($div, instance) {
 }
 */
 function showHideElements(settings, onChange) {
+    /*
     if ($('#visProj_').prop('checked')) {
         $('.tab-Views').hide();
     } else {
         $('.tab-Views').show();
     }
+    */
     $('#visProject').on('change', function () {
         if (projectsReady) {
             genViewList(settings, onChange);
         }
-        if (settings['visProject'] != ''){
-            $('.tab-Views').show();
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Views-Tab wird ausgeblendet  
+        /*
+        if (settings['visProject'] == ''){
+           $('.tab-Views').hide();
+        } else {
+           $('.tab-Views').show();
         }
+        */
     }).trigger('change');
 }
 
@@ -82,9 +89,10 @@ async function genProjectSelect(settings, onChange) {
         arr.sort();
         if (!settings['visProject'] || settings['visProject'] == '') {
             //Original von Simatec
-            //$sel.html(`<option value="${arr[0]}" "selected">${arr[0]}</option>`);
-            
-            $sel.html('<option value="" "selected">'+ _('Select first') +'</option>');
+            $sel.html(`<option value="${arr[0]}" "selected">${arr[0]}</option>`);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Select first wird angezeigt            
+            //$sel.html('<option value="select_first" "selected">'+ _('Select first') +'</option>');
             
             
             
@@ -96,8 +104,9 @@ async function genProjectSelect(settings, onChange) {
 
         arr.forEach(function (val) {
             //Original von Simatec
-            //if ((notselected && val != arr[0]) || !notselected) {
-                if ((notselected) || !notselected) {   
+            if ((notselected && val != arr[0]) || !notselected) {
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Alle Projekte werden angezeigt angezeigt     
+            //if ((notselected) || !notselected) {   
                 $('#visProject').append('<option value="' + val + '"' + (id === val ? ' selected' : '') + '>' + val + ' </option>');
             }
         });
@@ -135,7 +144,7 @@ function getVisContent(dp, settings) {
 // This will be called by the admin adapter when the settings page loads
 function load(settings, onChange) {
     // Aufruf Projektliste
-    if(settings.firstStart === true){
+    if (settings.firstStart === true){
         $('.progressBar').show();
         $('.waitMessage').show();
         $('.waitVisibility').hide();
@@ -144,9 +153,7 @@ function load(settings, onChange) {
         $('.waitMessage').hide();
         $('.waitVisibility').show();
     }
-
-    // Tab beim Laden Ausblenden
-    $('.tab-Views').hide();
+    console.log('-------------------->'+settings['visProject']+'<------------------------')
     // example: select elements with id=key and class=value and insert value
     //////////////////////////
     if (!settings) return;
