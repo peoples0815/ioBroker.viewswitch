@@ -78,7 +78,10 @@ async function genProjectSelect(settings, onChange) {
         var notselected = false;
         arr.sort();
         if (!settings['visProject'] || settings['visProject'] == '') {
-            $sel.html(`<option value="${arr[0]}" "selected">${arr[0]}</option>`);
+            //Original von Simatec
+            //$sel.html(`<option value="${arr[0]}" "selected">${arr[0]}</option>`);
+            $sel.html('<option value="" "selected">'+ _('Select first') +'</option>');
+            $('.tab-Views').hide();
             notselected = true;
         } else {
             $sel.html();
@@ -87,10 +90,7 @@ async function genProjectSelect(settings, onChange) {
 
         arr.forEach(function (val) {
             if ((notselected && val != arr[0]) || !notselected) {
-                // Original von Simatec
-                //$('#visProject').append('<option value="' + val + '"' + (id === val ? ' selected' : '') + '>' + val + ' </option>');
-                $('#visProject').append('<option value="" selected') + '>' + _('Select first') +' </option>';
-                $('.tab-Views').hide();
+                $('#visProject').append('<option value="' + val + '"' + (id === val ? ' selected' : '') + '>' + val + ' </option>');
             }
         });
         $sel.select();
