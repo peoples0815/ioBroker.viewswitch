@@ -160,7 +160,6 @@ class Viewswitch extends utils.Adapter {
 
 	async switchToLockView(state) {
 		try{
-			
 			const data = await this.getForeignStateAsync('vis.0.control.data')
 			const visInstance = await this.getForeignStateAsync('vis.0.control.instance');
 			let project = data.val.split('/')[0];

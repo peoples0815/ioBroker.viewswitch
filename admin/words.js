@@ -7,7 +7,7 @@ systemDictionary = {
 		'de': 'Adaptereinstellungen für viewswitch',
 		'ru': 'Настройки адаптера для viewswitch',
 		'pt': 'Configurações do adaptador para viewswitch',
-		'nl': 'Adapterinstellingen voor viewswitch',
+		'nl': 'Adaptereinstellingen voor viewswitch',
 		'fr': "Paramètres d'adaptateur pour viewswitch",
 		'it': "Impostazioni dell'adattatore per viewswitch",
 		'es': 'Ajustes del adaptador para viewswitch',
