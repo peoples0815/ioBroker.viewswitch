@@ -27,6 +27,7 @@ ToDo:
 - Auf Trigger bestimmte View anzeigen (main.js)
 - Automatisches durchwechseln aller Views (Bildschirmschoner)(main.js)
 - settings aller Projekte speichern nicht nur des ausgewählten(admin)
+- beim ersten Laden / Laden ohne ausgewähltes Projekt den View-Tap ausblenden und "Select first" einblenden. Nach dem Auswahlwechsel View einblenden und "Select first" nach dem Speichern entfernen
 
 ## Changelog
 
