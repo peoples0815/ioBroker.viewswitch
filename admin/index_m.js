@@ -23,6 +23,9 @@ function showHideElements(settings, onChange) {
         if (projectsReady) {
             genViewList(settings, onChange);
         }
+        if (settings['visProject'] != ''){
+            $('.tab-Views').show();
+        }
     }).trigger('change');
 }
 
@@ -82,7 +85,6 @@ async function genProjectSelect(settings, onChange) {
             //$sel.html(`<option value="${arr[0]}" "selected">${arr[0]}</option>`);
             
             $sel.html('<option value="" "selected">'+ _('Select first') +'</option>');
-            $('.tab-Views').hide();
             
             
             
@@ -142,6 +144,9 @@ function load(settings, onChange) {
         $('.waitMessage').hide();
         $('.waitVisibility').show();
     }
+
+    // Tab beim Laden Ausblenden
+    $('.tab-Views').hide();
     // example: select elements with id=key and class=value and insert value
     //////////////////////////
     if (!settings) return;
