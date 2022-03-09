@@ -25,7 +25,7 @@ function showHideElements(settings, onChange) {
         if (projectsReady) {
             genViewList(settings, onChange);
         }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Views-Tab wird ausgeblendet  
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Views-Tab wird ausgeblendet  
         /*
         if (settings['visProject'] == ''){
            $('.tab-Views').hide();
@@ -47,12 +47,11 @@ async function genViewList(settings, onChange) {
         for (var i in arr) {
             const _arr = {
                 viewName: arr[i],
-                swSec:60,
-                isHomeView: false,
+                swSec: 60,
+                isHomeView: i == 0 ? true : false,
                 isLockView: false,
                 showIAV: false
             }
-            i == 0 ? _arr.isHomeView = true : '';
             viewsTable.push(_arr);
         }
         values2table('viewsTable', viewsTable, onChange, tableOnReady);
@@ -61,15 +60,44 @@ async function genViewList(settings, onChange) {
 
 function tableOnReady() {
     var _views = table2values('viewsTable');
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     console.log('-------------------------------------------------------------------')
     console.log(JSON.stringify(_views));
     console.log('-------------------------------------------------------------------')
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     for (var i = 0; i < _views.length; i++) {
         $('#viewsTable .values-input[data-name="viewName"][data-index="' + i + '"]').prop('disabled', true).trigger('change');
         $('#viewsTable .values-input[data-name="viewName"][data-index="' + i + '"]').addClass('nameBold').trigger('change');
     }
+
+    $('#viewsTable .table-values-div .table-values .values-input[data-name="showIAV"]').on('change', function () {
+        var id = $(this).data('index');
+        var showIAV = $('#viewsTable .values-input[data-name="showIAV"][data-index="' + id + '"]').prop('checked');
+        if (showIAV == true) {
+            $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + id + '"]').prop('checked', false).trigger('change');
+            $('#viewsTable .values-input[data-name="isLockView"][data-index="' + id + '"]').prop('checked', false).trigger('change');
+        }
+    });
+
+    $('#viewsTable .table-values-div .table-values .values-input[data-name="isHomeView"]').on('change', function () {
+        var id = $(this).data('index');
+        var isHomeView = $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + id + '"]').prop('checked');
+
+        if (isHomeView == true) {
+            $('#viewsTable .values-input[data-name="showIAV"][data-index="' + id + '"]').prop('checked', false).trigger('change');
+            $('#viewsTable .values-input[data-name="isLockView"][data-index="' + id + '"]').prop('checked', false).trigger('change');
+        }
+    });
+
+    $('#viewsTable .table-values-div .table-values .values-input[data-name="isLockView"]').on('change', function () {
+        var id = $(this).data('index');
+        var isLockView = $('#viewsTable .values-input[data-name="isLockView"][data-index="' + id + '"]').prop('checked');
+
+        if (isLockView == true) {
+            $('#viewsTable .values-input[data-name="showIAV"][data-index="' + id + '"]').prop('checked', false).trigger('change');
+            $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + id + '"]').prop('checked', false).trigger('change');
+        }
+    });
 }
 
 async function genProjectSelect(settings, onChange) {
@@ -91,11 +119,11 @@ async function genProjectSelect(settings, onChange) {
             //Original von Simatec
             $sel.html(`<option value="${arr[0]}" "selected">${arr[0]}</option>`);
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Select first wird angezeigt            
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Select first wird angezeigt            
             //$sel.html('<option value="select_first" "selected">'+ _('Select first') +'</option>');
-            
-            
-            
+
+
+
             notselected = true;
         } else {
             $sel.html();
@@ -105,8 +133,8 @@ async function genProjectSelect(settings, onChange) {
         arr.forEach(function (val) {
             //Original von Simatec
             if ((notselected && val != arr[0]) || !notselected) {
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Alle Projekte werden angezeigt angezeigt     
-            //if ((notselected) || !notselected) {   
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Alle Projekte werden angezeigt angezeigt     
+                //if ((notselected) || !notselected) {   
                 $('#visProject').append('<option value="' + val + '"' + (id === val ? ' selected' : '') + '>' + val + ' </option>');
             }
         });
@@ -115,7 +143,7 @@ async function genProjectSelect(settings, onChange) {
         $('.waitMessage').hide();
         $('.waitVisibility').show();
 
-        
+
         // Generate list if no view exists yet
         var _views = table2values('viewsTable');
 
@@ -144,7 +172,7 @@ function getVisContent(dp, settings) {
 // This will be called by the admin adapter when the settings page loads
 function load(settings, onChange) {
     // Aufruf Projektliste
-    if (settings.firstStart === true){
+    if (settings.firstStart === true) {
         $('.progressBar').show();
         $('.waitMessage').show();
         $('.waitVisibility').hide();
@@ -153,7 +181,7 @@ function load(settings, onChange) {
         $('.waitMessage').hide();
         $('.waitVisibility').show();
     }
-    console.log('-------------------->'+settings['visProject']+'<------------------------')
+    console.log('-------------------->' + settings['visProject'] + '<------------------------')
     // example: select elements with id=key and class=value and insert value
     //////////////////////////
     if (!settings) return;
@@ -184,8 +212,8 @@ function load(settings, onChange) {
     onChange(false);
     M.updateTextFields();
 
-    
-    
+
+
     genProjectSelect(settings, onChange);
 
 }
