@@ -54,6 +54,10 @@ label > i[title] {
 	font-weight:bold;
 }
 
+.m .table-values td, .m .table-values th {
+    text-align: center;
+}
+
 /* Tabs menu react-dark */
 .m.react-dark .tabs .tab a.active, .m .tabs .tab a:hover { color: #2196f3; }
 .m.react-dark .tabs { background-color: #272727 !important;}
