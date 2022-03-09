@@ -22,8 +22,8 @@ Für jede View ist die Anzeigezeit separat einstellbar.
 
 //.....
 ToDo:
-- isHomeView-Auswahl auf einen Eintrag begrenzen (admin)
-- isLockView-Auswahl auf einen Eintrag begrenzen / Ausgewählter Eintrag hat keine Ablaufzeit (fest auf 0) (admin)
+- <del>isHomeView-Auswahl auf einen Eintrag begrenzen (admin)</del>
+- <del>isLockView-Auswahl auf einen Eintrag begrenzen </del> / Ausgewählter Eintrag hat keine Ablaufzeit (fest auf 0) (admin)
 - Auf Trigger bestimmte View anzeigen (main.js)
 - Automatisches durchwechseln aller Views (Bildschirmschoner)(main.js)
 - settings aller Projekte speichern nicht nur des ausgewählten(admin)
