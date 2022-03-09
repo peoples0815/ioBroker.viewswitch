@@ -70,6 +70,7 @@ function tableOnReady() {
         $('#viewsTable .values-input[data-name="viewName"][data-index="' + i + '"]').addClass('nameBold').trigger('change');
     }
 
+/*
     $('#viewsTable .table-values-div .table-values .values-input[data-name="showIAV"]').on('change', function () {
         var id = $(this).data('index');
         var showIAV = $('#viewsTable .values-input[data-name="showIAV"][data-index="' + id + '"]').prop('checked');
@@ -98,6 +99,35 @@ function tableOnReady() {
             $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + id + '"]').prop('checked', false).trigger('change');
         }
     });
+*/
+    
+    $('#viewsTable .table-values-div .table-values .values-input[data-name="isLockView"]').on('change', function () {
+        var id = $(this).data('index');
+        var isHomeView = $('#viewsTable .values-input[data-name="isLockView"][data-index="' + id + '"]').prop('checked');
+        if(isHomeView === true){
+            for (var i = 0; i < _views.length; i++) {
+                if(i != id){
+                    $('#viewsTable .values-input[data-name="isLockView"][data-index="' + i + '"]').prop('checked', false).trigger('change');
+                } 
+            }
+        }
+        
+    });
+
+
+    $('#viewsTable .table-values-div .table-values .values-input[data-name="isHomeView"]').on('change', function () {
+        var id = $(this).data('index');
+        var isHomeView = $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + id + '"]').prop('checked');
+        if(isHomeView === true){
+            for (var i = 0; i < _views.length; i++) {
+                if(i != id){
+                    $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + i + '"]').prop('checked', false).trigger('change');
+                } 
+            }
+        }
+        
+    });
+
 }
 
 async function genProjectSelect(settings, onChange) {
