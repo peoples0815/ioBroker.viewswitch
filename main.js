@@ -100,10 +100,14 @@ class Viewswitch extends utils.Adapter {
 
 	
 	// Switch immediately to Wishview
-	switchToViewImmediate(view){
-		adapter.setForeignState('vis.0.control.instance', 'FFFFFFFF');
-		adapter.setForeignState('vis.0.control.data', view);
-		adapter.setForeignState('vis.0.control.command', 'changeView');
+	switchToViewImmediate(view, visInstance){
+		if (visInstance === undefined || this.config.swAllInstances === true) {
+			this.setForeignStateAsync('vis.0.control.instance', 'FFFFFFFF');
+		} else {
+			this.setForeignStateAsync('vis.0.control.instance', visInstance);
+		}
+		this.setForeignState('vis.0.control.data', view);
+		this.setForeignState('vis.0.control.command', 'changeView');
 	}
 
 
@@ -120,37 +124,41 @@ class Viewswitch extends utils.Adapter {
 			let posView = await this.config.viewsTable.findIndex(obj => obj.viewName == view)
 			let posHomeView = await this.config.viewsTable.findIndex(obj => obj.isHomeView === true)
 
-			
-			if(lockViewActive.val === true){ 
-				this.log.info('--- Lockview is aktive ---')
-				this.switchToLockView();
-				
+			if(posView == -1){
+				this.switchToViewImmediate(this.config.visProject + '/' + this.config.viewsTable[posHomeView].viewName, visInstance.val)
 			} else {
-				if(await this.config.viewsTable[posView].isHomeView === false){
-					if(parseInt(await this.config.viewsTable[posView].swSec) > 0){
-						await this.setStateAsync('switchTimer', parseInt(await this.config.viewsTable[posView].swSec), true);
+			
+				if (lockViewActive.val === true){ 
+					this.log.info('--- Lockview is aktive ---')
+					this.switchToLockView();
+					
+				} else {
+					if (await this.config.viewsTable[posView].isHomeView === false){
+						if(parseInt(await this.config.viewsTable[posView].swSec) > 0){
+							await this.setStateAsync('switchTimer', parseInt(await this.config.viewsTable[posView].swSec), true);
 
-						let timer = parseInt(await this.config.viewsTable[posView].swSec);
-						
-						let viewCountdown = setInterval(async () => {
-							timer = timer -1;
-							this.log.info(timer);
-							await this.setStateAsync('switchTimer', timer, true);
-							if(timer == 0){
-								clearInterval(viewCountdown)
-								this.log.info('fertig')
-								if(visInstance.val === undefined || this.config.swAllInstances === true) {
-									await this.setForeignStateAsync('vis.0.control.instance', 'FFFFFFFF');
-								} else {
-									await this.setForeignStateAsync('vis.0.control.instance', visInstance.val);
-								}
-								await this.setForeignStateAsync('vis.0.control.data', project + '/' + this.config.viewsTable[posHomeView].viewName);
-								await this.setForeignStateAsync('vis.0.control.command', 'changeView');
-							}	
-						}, 1000);
+							let timer = parseInt(await this.config.viewsTable[posView].swSec);
+							
+							let viewCountdown = setInterval(async () => {
+								timer = timer -1;
+								this.log.info(timer);
+								await this.setStateAsync('switchTimer', timer, true);
+								if(timer == 0){
+									clearInterval(viewCountdown)
+									this.log.info('fertig')
+									if (visInstance.val === undefined || this.config.swAllInstances === true) {
+										await this.setForeignStateAsync('vis.0.control.instance', 'FFFFFFFF');
+									} else {
+										await this.setForeignStateAsync('vis.0.control.instance', visInstance.val);
+									}
+									await this.setForeignStateAsync('vis.0.control.data', project + '/' + this.config.viewsTable[posHomeView].viewName);
+									await this.setForeignStateAsync('vis.0.control.command', 'changeView');
+								}	
+							}, 1000);
+						}
 					}
-				}
-			} 
+				} 
+			}
 
 		} catch (e) {
 		this.log.error(e);
@@ -265,7 +273,7 @@ class Viewswitch extends utils.Adapter {
 		// Or, if you really must, you can also watch all states. Don't do this if you don't need to. Otherwise this will cause a lot of unnecessary load on the system:
 		// this.subscribeStates('*');
 		this.subscribeStates('lockViewActive');
-		this.subscribeForeignStates('vis.*.control.data');
+		this.subscribeForeignStates('vis.0.control.data');
 		/*
 			setState examples
 			you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)

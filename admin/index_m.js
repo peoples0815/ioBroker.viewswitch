@@ -60,11 +60,6 @@ async function genViewList(settings, onChange) {
 
 function tableOnReady() {
     var _views = table2values('viewsTable');
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    console.log('-------------------------------------------------------------------')
-    console.log(JSON.stringify(_views));
-    console.log('-------------------------------------------------------------------')
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     for (var i = 0; i < _views.length; i++) {
         $('#viewsTable .values-input[data-name="viewName"][data-index="' + i + '"]').prop('disabled', true).trigger('change');
         $('#viewsTable .values-input[data-name="viewName"][data-index="' + i + '"]').addClass('nameBold').trigger('change');
@@ -74,36 +69,6 @@ function tableOnReady() {
         } 
     }
 
-/*
-    $('#viewsTable .table-values-div .table-values .values-input[data-name="showIAV"]').on('change', function () {
-        var id = $(this).data('index');
-        var showIAV = $('#viewsTable .values-input[data-name="showIAV"][data-index="' + id + '"]').prop('checked');
-        if (showIAV == true) {
-            $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + id + '"]').prop('checked', false).trigger('change');
-            $('#viewsTable .values-input[data-name="isLockView"][data-index="' + id + '"]').prop('checked', false).trigger('change');
-        }
-    });
-
-    $('#viewsTable .table-values-div .table-values .values-input[data-name="isHomeView"]').on('change', function () {
-        var id = $(this).data('index');
-        var isHomeView = $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + id + '"]').prop('checked');
-
-        if (isHomeView == true) {
-            $('#viewsTable .values-input[data-name="showIAV"][data-index="' + id + '"]').prop('checked', false).trigger('change');
-            $('#viewsTable .values-input[data-name="isLockView"][data-index="' + id + '"]').prop('checked', false).trigger('change');
-        }
-    });
-
-    $('#viewsTable .table-values-div .table-values .values-input[data-name="isLockView"]').on('change', function () {
-        var id = $(this).data('index');
-        var isLockView = $('#viewsTable .values-input[data-name="isLockView"][data-index="' + id + '"]').prop('checked');
-
-        if (isLockView == true) {
-            $('#viewsTable .values-input[data-name="showIAV"][data-index="' + id + '"]').prop('checked', false).trigger('change');
-            $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + id + '"]').prop('checked', false).trigger('change');
-        }
-    });
-*/
     
     $('#viewsTable .table-values-div .table-values .values-input[data-name="isLockView"]').on('change', function () {
         var id = $(this).data('index');
