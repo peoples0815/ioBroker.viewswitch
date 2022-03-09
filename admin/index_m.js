@@ -68,6 +68,10 @@ function tableOnReady() {
     for (var i = 0; i < _views.length; i++) {
         $('#viewsTable .values-input[data-name="viewName"][data-index="' + i + '"]').prop('disabled', true).trigger('change');
         $('#viewsTable .values-input[data-name="viewName"][data-index="' + i + '"]').addClass('nameBold').trigger('change');
+        var isHomeView = $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + i + '"]').prop('checked');
+        if (isHomeView === true){
+            $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + i + '"]').prop('disabled', true);
+        } 
     }
 
 /*
@@ -104,7 +108,7 @@ function tableOnReady() {
     $('#viewsTable .table-values-div .table-values .values-input[data-name="isLockView"]').on('change', function () {
         var id = $(this).data('index');
         var isHomeView = $('#viewsTable .values-input[data-name="isLockView"][data-index="' + id + '"]').prop('checked');
-        if(isHomeView === true){
+        if (isHomeView === true){
             for (var i = 0; i < _views.length; i++) {
                 if(i != id){
                     $('#viewsTable .values-input[data-name="isLockView"][data-index="' + i + '"]').prop('checked', false).trigger('change');
@@ -118,14 +122,15 @@ function tableOnReady() {
     $('#viewsTable .table-values-div .table-values .values-input[data-name="isHomeView"]').on('change', function () {
         var id = $(this).data('index');
         var isHomeView = $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + id + '"]').prop('checked');
-        if(isHomeView === true){
+        if (isHomeView === true){
+            $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + id + '"]').prop('disabled', true);
             for (var i = 0; i < _views.length; i++) {
-                if(i != id){
+                if (i != id){
                     $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + i + '"]').prop('checked', false).trigger('change');
+                    $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + i + '"]').prop('disabled', false);
                 } 
             }
-        }
-        
+        } 
     });
 
 }
