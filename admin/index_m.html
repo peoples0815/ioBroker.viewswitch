@@ -40,11 +40,9 @@
             <div class="col s12"
                 style="padding-left:0;padding-right:0; margin-top: 0px; margin-bottom: 1px; background-color:#174475; box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);">
                 <ul class="tabs blue lighten-4">
-                    <li class="tab col s6"><a href="#tab_main" class="translate">main</a></li>
-                    <li class="tab col s6 tab-Views"><a href="#tab_views" class="translate">views</a></li>
-                    <!-- lässt sich nicht anzeigen
-                    <li class="tab col s6" ><a href="tab_extTriggers" class="translate">trigger</a></li>
-                    -->
+                    <li class="tab col s4"><a href="#tab_main" class="translate">main</a></li>
+                    <li class="tab col s4 tab-Views"><a href="#tab_views" class="translate">views</a></li>
+                    <li class="tab col s4" ><a href="#tab_triggers" class="translate">external triggers</a></li>
                     
                 </ul>
             </div>
@@ -107,16 +105,11 @@
                                 <table class="table-values" style="width: 100%; margin-top: 8px">
                                     <thead>
                                         <tr>
-                                            <th data-name="viewName" id="viewsTable_col_0" data-type="text"
-                                                style="width: 40%" class="translate">View Name</th>
-                                            <th data-name="swSec" id="viewsTable_col_1" data-type="number"
-                                                style="width: 15%" class="translate">Anzeigezeit in Sek.</th>
-                                            <th data-name="showIAV" id="viewsTable_col_2" data-type="checkbox"
-                                                style="width: 15%" class="translate">Sichtbar in Autoview</th>
-                                            <th data-name="isHomeView" id="viewsTable_col_3" data-type="checkbox"
-                                                style="width: 15%" class="translate">Ist Homeview</th>
-                                            <th data-name="isLockView" id="viewsTable_col_4" data-type="checkbox"
-                                                style="width: 15%" class="translate">Ist Lockview</th>
+                                            <th data-name="viewName" id="viewsTable_col_0" data-type="text" style="width: 40%" class="header translate">View Name</th>
+                                            <th data-name="swSec" id="viewsTable_col_1" data-type="number" style="width: 15%" class="header translate">Anzeigezeit in Sek.</th>
+                                            <th data-name="showIAV" id="viewsTable_col_2" data-type="checkbox" style="width: 15%" class="header translate">Sichtbar in Autoview</th>
+                                            <th data-name="isHomeView" id="viewsTable_col_3" data-type="checkbox" style="width: 15%" class="header translate">Ist Homeview</th>
+                                            <th data-name="isLockView" id="viewsTable_col_4" data-type="checkbox" style="width: 15%" class="header translate">Ist Lockview</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -127,22 +120,40 @@
 
             </div>
             <!--===================================================== External Triggers =============================================-->
+            
             <!-- Tab Trigger -->
-<!-- lässt sich nicht anzeigen
-            <div id="tab_extTriggers" class="col s12 page">
+            <div id="tab_triggers" class="col s12 page">
                 <div class="row">
-                    <div class="col s12 m12 l12">
-                        <div id="external_triggers">
-                            <div class="row">
-                                Liste für Externe Triggers
-                                mit einem + um neue Zeile einzufügen
-                                und select der View die geschalten werden soll
-                            </div> 
+                    <div class="col s12" id="shorts_in">
+                        <div class="row">
+                            <div class="col s2 m1 l1 left">
+                                <a   class="btn-floating waves-effect waves-light blue table-button-add" id="shorts_in_table"><i class="material-icons">add</i></a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12">
+                            <p class=" left translate">input</p>
+                            </div>
+                        </div>
+                        <div class="table-values-div">
+                            <table class="table-values">
+                                <thead>
+                                <tr>
+                                    <th data-name="enabled"  style="width: 50px" data-type="checkbox" class="header translate">active</th>
+                                    <th data-name="name" data-type="text" class="header translate">Titel</th>
+                                    <th data-name="name_id" data-type="text" class="header translate">Object-ID</th>
+                                    <th data-buttons="edit" style="width: 40px" class="header translate"></th>
+                                    <th data-name="trigger_val" style="width: 80px" data-type="select" data-options="any;ne" class="header translate">Trigger</th>
+                                    <th data-name="value" class="header translate">trigger_values</th>
+                                    <th data-name="select_id" data-type="select" data-options="Hier müssen;alle Views;gelistet werden" class="header translate">Name</th>
+                                    <th data-buttons="delete" style="width: 40px" class="header translate"></th>
+                                </tr>
+                                </thead>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-        -->
         </div>
 
 </body>

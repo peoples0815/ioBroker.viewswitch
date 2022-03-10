@@ -52,11 +52,31 @@ label > i[title] {
 
 .nameBold {
 	font-weight:bold;
+	color: black;
 }
 
 .m .table-values td, .m .table-values th {
     text-align: center;
 }
+
+/* Table header */
+table.table-values th.header { 
+	background-color:#64BfF6; 
+	font-size:90%; 
+	text-align:center; 
+	line-height: 1em; 
+	padding:6px 2px;
+}
+
+/* format second column of option tables */
+table.table-values tr td:nth-child(2) input { 
+	font-weight:bold; 
+}
+
+
+
+
+
 
 /* Tabs menu react-dark */
 .m.react-dark .tabs .tab a.active, .m .tabs .tab a:hover { color: #2196f3; }

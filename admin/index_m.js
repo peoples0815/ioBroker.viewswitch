@@ -63,6 +63,8 @@ function tableOnReady() {
     for (var i = 0; i < _views.length; i++) {
         $('#viewsTable .values-input[data-name="viewName"][data-index="' + i + '"]').prop('disabled', true).trigger('change');
         $('#viewsTable .values-input[data-name="viewName"][data-index="' + i + '"]').addClass('nameBold').trigger('change');
+
+
         var isHomeView = $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + i + '"]').prop('checked');
         if (isHomeView === true){
             $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + i + '"]').prop('disabled', true);
