@@ -66,9 +66,11 @@ function tableOnReady() {
 
 
         var isHomeView = $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + i + '"]').prop('checked');
+        /* Old Checkboxes
         if (isHomeView === true){
             $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + i + '"]').prop('disabled', true);
-        } 
+        }
+        */ 
     }
 
     
@@ -90,7 +92,7 @@ function tableOnReady() {
         var id = $(this).data('index');
         var isHomeView = $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + id + '"]').prop('checked');
         if (isHomeView === true){
-            $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + id + '"]').prop('disabled', true);
+            //$('#viewsTable .values-input[data-name="isHomeView"][data-index="' + id + '"]').prop('disabled', true);
             for (var i = 0; i < _views.length; i++) {
                 if (i != id){
                     $('#viewsTable .values-input[data-name="isHomeView"][data-index="' + i + '"]').prop('checked', false).trigger('change');
@@ -99,6 +101,7 @@ function tableOnReady() {
             }
         } 
     });
+    
 
 }
 
