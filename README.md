@@ -24,6 +24,8 @@ Für jede View ist die Anzeigezeit separat einstellbar.
 ToDo:
 - <del>isHomeView-Auswahl auf einen Eintrag begrenzen (admin)</del>
 - <del>isLockView-Auswahl auf einen Eintrag begrenzen </del> / Ausgewählter Eintrag hat keine Ablaufzeit (fest auf 0) (admin)
+- <del>isHomeView-Auswahl mit radiobuttons anstelle Checkbox / Richtige Adminversion als Install-Vorraussetzung (admin)</del>
+- Übersetzungen ergänzen
 - Auf Trigger bestimmte View anzeigen (main.js)
 - Automatisches durchwechseln aller Views (Bildschirmschoner)(main.js)
 - settings aller Projekte speichern nicht nur des ausgewählten(admin)
