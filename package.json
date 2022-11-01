@@ -17,7 +17,7 @@
     "url": "git+https://github.com/peoples0815/ioBroker.viewswitch.git"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^2.6.0"
+    "@iobroker/adapter-core": "^2.6.7"
   },
   "devDependencies": {
     "@alcalzone/release-script": "^3.5.2",
